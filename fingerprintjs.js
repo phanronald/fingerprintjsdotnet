@@ -49,7 +49,8 @@ var FingerPrints;
             return !!(elem.getContext && elem.getContext("2d"));
         };
         FingerPrinting.prototype.isIE = function () {
-            return (navigator.appName === "Microsoft Internet Explorer" || (navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)));
+            return (navigator.appName === "Microsoft Internet Explorer" ||
+                (navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)));
         };
         FingerPrinting.prototype.getPluginsString = function () {
             if (this.isIE() && this.useIEActiveX) {
@@ -84,6 +85,7 @@ var FingerPrints;
                     'AgControl.AgControl',
                     'Skype.Detection',
                     'VideoLAN.VLCPlugin',
+                    //real player 5 of them
                     'rmocx.RealPlayer G2 Control',
                     'rmocx.RealPlayer G2 Control.1',
                     'RealPlayer.RealPlayer(tm) ActiveX Control (32-bit)',
@@ -128,6 +130,31 @@ var FingerPrints;
             }
             return available;
         };
+        FingerPrinting.prototype.hasSessionStorage = function () {
+            try {
+                return !!window.sessionStorage;
+            }
+            catch (e) {
+                return true; // SecurityError when referencing it means it exists
+            }
+        };
+        FingerPrinting.prototype.hasLocalStorage = function () {
+            try {
+                return !!window.localStorage;
+            }
+            catch (e) {
+                return true; // SecurityError when referencing it means it exists
+            }
+        };
+        FingerPrinting.prototype.hasIndexedDB = function () {
+            return !!window.indexedDB;
+        };
+        FingerPrinting.prototype.getAdBlock = function () {
+            var ads = document.createElement("div");
+            ads.setAttribute("id", "ads");
+            document.body.appendChild(ads);
+            return document.getElementById("ads") ? false : true;
+        };
         FingerPrinting.prototype.getCanvasFingerprintFeature = function () {
             var result = [];
             var canvas = document.createElement("canvas");
@@ -137,8 +164,7 @@ var FingerPrints;
             try {
                 ctx.globalCompositeOperation = "screen";
             }
-            catch (e) {
-            }
+            catch (e) { }
             result.push("canvas blending:" + ((ctx.globalCompositeOperation === "screen") ? "yes" : "no"));
             ctx.rect(0, 0, 10, 10);
             ctx.rect(2, 2, 6, 6);
@@ -154,8 +180,7 @@ var FingerPrints;
             try {
                 ctx.globalCompositeOperation = "screen";
             }
-            catch (e) {
-            }
+            catch (e) { }
             var txt = "https://kawasaki.com/valve for a better software process";
             ctx.textBaseline = "top";
             ctx.font = "72px 'DamascusLight'";
@@ -199,8 +224,7 @@ var FingerPrints;
             try {
                 gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
             }
-            catch (e) {
-            }
+            catch (e) { }
             return gl;
         };
         FingerPrinting.prototype.getWebGlFeatures = function () {
@@ -313,7 +337,40 @@ var FingerPrints;
             return result.join("~");
         };
         FingerPrinting.prototype.getFontsInstalled = function () {
-            var fonts = ["algerian", "Andalus", "Angsana New", "AngsanaUPC", "Aparajita", "Apple Symbols", "Arabic Typesetting", "Arial", "Arial Black", "Arial Narrow", "Arial Rounded MT Bold", "Arial Unicode MS", "Baskerville Old Face", "Batang", "BatangChe", "Bauhaus 93", "Bell MT", "Berlin Sans FB", "Bitstream Charter", "Bitstream Vera Sans", "Bitstream Vera Serif", "Bookman Old Style", "Bradley Hand ITC", "Bookshelf Symbol 7", "Broadway", "Browallia New", "BrowalliaUPC", "brush script mt", "Calibri", "Californian FB", "Cambria", "Cambria Math", "Candara", "Century", "Century Gothic", "Charter", "Chiller", "colonna mt", "Comic Sans MS", "Consolas", "Constantia", "Corbel", "Cordia New", "CordiaUPC", "Courier", "Courier New", "cursive", "DaunPenh", "David", "default", "DFKai-SB", "DilleniaUPC", "Dingbats", "DokChampa", "Dotum", "DotumChe", "Ebrima", "Elephant", "Engravers MT", "Estrangelo Edessa", "EucrosiaUPC", "Euphemia", "FangSong", "fantasy", "FrankRuehl", "FreeSans", "FreeSerif", "FreesiaUPC", "Freestyle Script", "Garamond", "Garuda", "Gautami", "Gentium", "Georgia", "Gisha", "Gulim", "GulimChe", "Gungsuh", "GungsuhChe", "Haettenschweiler", "Harrington", "Heiti TC", "High Tower Text", "Impact", "Informal Roman", "IrisUPC", "Iskoola Pota", "JasmineUPC", "Jokerman", "Juice ITC", "KaiTi", "Kalinga", "Kartika", "King", "KodchiangUPC", "Kokonor", "Kristen ITC", "Lalit", "Latha", "Leelawadee", "Levenim MT", "Liberation Mono", "Liberation Mono", "Liberation Sans", "LilyUPC", "Loma", "Lucida Bright", "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "Lucida Handwriting", "Lucida Sans Unicode", "Luxi Sans", "Magneto", "Malgun Gothic", "Mangal", "marlett", "matura mt script capitals", "Meiryo", "Meiryo UI", "Microsoft Himalaya", "Microsoft JhengHei", "Microsoft Sans Serif", "Microsoft Uighur", "Microsoft YaHei", "Microsoft Yi Baiti", "MingLiU", "MingLiU_HKSCS", "MingLiU_HKSCS-ExtB", "MingLiU-ExtB", "Miriam", "Miriam Fixed", "Mistral", "Modena", "Mongolian Baiti", "monospace", "Monotype Corsiva", "MoolBoran", "MS Gothic", "MS Mincho", "MS Outlook", "MS PGothic", "MS PMincho", "MS Reference Sans Serif", "MS Reference Specialty", "MS UI Gothic", "MT Extra", "MV Boli", "Myriad Pro", "Narkisim", "Niagara Solid", "Nimbus Mono L", "Nimbus Roman No 9 L", "Nimbus Sans L", "NSimSun", "Nyala", "OCR A Std", "Old English Text MT", "Onyx", "Optima", "palatino linotype", "Papyrus", "Parchment", "Plantagenet Cherokee", "playbill", "PMingLiU", "PMingLiU-ExtB", "Poor Richard", "Raavi", "Ravie", "Rod", "Saab", "sans-serif", "Segoe Print", "Segoe Script", "Segoe UI", "serif", "Showcard Gothic", "Shruti", "SimHei", "Simplified Arabic", "Simplified Arabic Fixed", "SimSun", "SimSun-ExtB", "Snap ITC", "Stencil", "Sylfaen", "symbol", "Tahoma", "Tempus Sans ITC", "TeX", "Times", "Times New Roman", "Traditional Arabic", "Trebuchet MS", "Tunga", "Ubuntu", "URW Antiqua T", "URW Gothic L", "URW Grotesk T", "URW Palladio L", "Utopia", "Verdana", "Verona", "Vijaya", "Viner Hand ITC", "Vrinda", "webdings", "wide latin", "Zapfino"];
+            var fonts = ["algerian", "Andalus", "Angsana New", "AngsanaUPC",
+                "Aparajita", "Apple Symbols", "Arabic Typesetting", "Arial", "Arial Black", "Arial Narrow",
+                "Arial Rounded MT Bold", "Arial Unicode MS", "Baskerville Old Face", "Batang", "BatangChe",
+                "Bauhaus 93", "Bell MT", "Berlin Sans FB", "Bitstream Charter", "Bitstream Vera Sans",
+                "Bitstream Vera Serif", "Bookman Old Style", "Bradley Hand ITC", "Bookshelf Symbol 7",
+                "Broadway", "Browallia New", "BrowalliaUPC", "brush script mt", "Calibri", "Californian FB",
+                "Cambria", "Cambria Math", "Candara", "Century", "Century Gothic", "Charter", "Chiller",
+                "colonna mt", "Comic Sans MS", "Consolas", "Constantia", "Corbel", "Cordia New", "CordiaUPC",
+                "Courier", "Courier New", "cursive", "DaunPenh", "David", "default", "DFKai-SB", "DilleniaUPC",
+                "Dingbats", "DokChampa", "Dotum", "DotumChe", "Ebrima", "Elephant", "Engravers MT",
+                "Estrangelo Edessa", "EucrosiaUPC", "Euphemia", "FangSong", "fantasy", "FrankRuehl",
+                "FreeSans", "FreeSerif", "FreesiaUPC", "Freestyle Script", "Garamond", "Garuda", "Gautami",
+                "Gentium", "Georgia", "Gisha", "Gulim", "GulimChe", "Gungsuh", "GungsuhChe", "Haettenschweiler",
+                "Harrington", "Heiti TC", "High Tower Text", "Impact", "Informal Roman", "IrisUPC", "Iskoola Pota",
+                "JasmineUPC", "Jokerman", "Juice ITC", "KaiTi", "Kalinga", "Kartika", "King",
+                "KodchiangUPC", "Kokonor", "Kristen ITC", "Lalit", "Latha", "Leelawadee", "Levenim MT",
+                "Liberation Mono", "Liberation Mono", "Liberation Sans", "LilyUPC", "Loma", "Lucida Bright",
+                "Lucida Calligraphy", "Lucida Console", "Lucida Fax", "Lucida Handwriting", "Lucida Sans Unicode",
+                "Luxi Sans", "Magneto", "Malgun Gothic", "Mangal", "marlett", "matura mt script capitals",
+                "Meiryo", "Meiryo UI", "Microsoft Himalaya", "Microsoft JhengHei", "Microsoft Sans Serif",
+                "Microsoft Uighur", "Microsoft YaHei", "Microsoft Yi Baiti", "MingLiU", "MingLiU_HKSCS",
+                "MingLiU_HKSCS-ExtB", "MingLiU-ExtB", "Miriam", "Miriam Fixed", "Mistral", "Modena",
+                "Mongolian Baiti", "monospace", "Monotype Corsiva", "MoolBoran", "MS Gothic", "MS Mincho",
+                "MS Outlook", "MS PGothic", "MS PMincho", "MS Reference Sans Serif", "MS Reference Specialty",
+                "MS UI Gothic", "MT Extra", "MV Boli", "Myriad Pro", "Narkisim", "Niagara Solid", "Nimbus Mono L",
+                "Nimbus Roman No 9 L", "Nimbus Sans L", "NSimSun", "Nyala", "OCR A Std", "Old English Text MT",
+                "Onyx", "Optima", "palatino linotype", "Papyrus", "Parchment", "Plantagenet Cherokee", "playbill",
+                "PMingLiU", "PMingLiU-ExtB", "Poor Richard", "Raavi", "Ravie", "Rod", "Saab", "sans-serif",
+                "Segoe Print", "Segoe Script", "Segoe UI", "serif", "Showcard Gothic", "Shruti", "SimHei",
+                "Simplified Arabic", "Simplified Arabic Fixed", "SimSun", "SimSun-ExtB", "Snap ITC", "Stencil",
+                "Sylfaen", "symbol", "Tahoma", "Tempus Sans ITC", "TeX", "Times", "Times New Roman",
+                "Traditional Arabic", "Trebuchet MS", "Tunga", "Ubuntu", "URW Antiqua T", "URW Gothic L",
+                "URW Grotesk T", "URW Palladio L", "Utopia", "Verdana", "Verona", "Vijaya", "Viner Hand ITC",
+                "Vrinda", "webdings", "wide latin", "Zapfino"];
             var fontDictionary = [];
             for (var i = 0; i < fonts.length; i++) {
                 var result = new FrontEndDetection.DectectFont().detect(fonts[i]);
@@ -353,7 +410,11 @@ var FingerPrints;
             c2 = 0x1b873593;
             i = 0;
             while (i < bytes) {
-                k1 = ((key.charCodeAt(i) & 0xff)) | ((key.charCodeAt(++i) & 0xff) << 8) | ((key.charCodeAt(++i) & 0xff) << 16) | ((key.charCodeAt(++i) & 0xff) << 24);
+                k1 =
+                    ((key.charCodeAt(i) & 0xff)) |
+                        ((key.charCodeAt(++i) & 0xff) << 8) |
+                        ((key.charCodeAt(++i) & 0xff) << 16) |
+                        ((key.charCodeAt(++i) & 0xff) << 24);
                 ++i;
                 k1 = ((((k1 & 0xffff) * c1) + ((((k1 >>> 16) * c1) & 0xffff) << 16))) & 0xffffffff;
                 k1 = (k1 << 15) | (k1 >>> 17);
@@ -571,23 +632,24 @@ var FingerPrints;
                 keys.push(this.getCanvasFingerprintFeature());
                 keys.push(this.getWebGlFeatures());
             }
-            if (!!(window.indexedDB || window.msIndexedDB)) {
+            if (this.hasIndexedDB() || !!window.msIndexedDB) {
                 keys.push("hasIndexDB");
             }
-            if (!!window.localStorage) {
+            if (this.hasLocalStorage()) {
                 keys.push("hasLocalStorage");
             }
-            if (!!window.sessionStorage) {
+            if (this.hasSessionStorage()) {
                 keys.push("hasSessionStorage");
             }
             if (!!window.openDatabase) {
                 keys.push("hasOpenDatabase");
             }
             keys.push(navigator.cpuClass || "not supported");
-            keys.push(navigator.msDoNotTrack || navigator.doNotTrack || "nope");
+            keys.push(navigator.doNotTrack || "nope");
             keys.push(navigator.platform);
             keys.push(this.getPluginsString());
             keys.push(navigator.mimeTypes);
+            keys.push(this.getAdBlock());
             keys.push(this.specialDetermineIEFunction());
             if (this.use64bitHash) {
                 return this.murmurhash3_64_gc(keys.join("###"), 31);

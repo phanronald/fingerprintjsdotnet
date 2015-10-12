@@ -10,16 +10,19 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.4</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="Example.html" />
     <Content Include="fingerprintjs.js" />
     <Content Include="frontend-detection.js" />
+    <Content Include="mobile-browser.js" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -28,6 +31,7 @@
     <Content Include="fingerprintjs.js.map" />
     <Content Include="frontend-detection.js.map" />
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
+    <Content Include="mobile-browser.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -38,6 +42,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="fingerprintjs.ts" />
     <TypeScriptCompile Include="frontend-detection.ts" />
+    <TypeScriptCompile Include="mobile-browser.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />

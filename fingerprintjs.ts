@@ -146,6 +146,33 @@ module FingerPrints {
 			return available;
 		}
 
+		private hasSessionStorage(): boolean {
+			try {
+				return !!window.sessionStorage;
+			} catch (e) {
+				return true; // SecurityError when referencing it means it exists
+			}
+		}
+
+		private hasLocalStorage(): boolean {
+			try {
+				return !!window.localStorage;
+			} catch (e) {
+				return true; // SecurityError when referencing it means it exists
+			}
+		}
+
+		private hasIndexedDB(): boolean {
+			return !!window.indexedDB;
+		}
+
+		private getAdBlock(): any {
+			var ads: HTMLDivElement = document.createElement("div");
+			ads.setAttribute("id", "ads");
+			document.body.appendChild(ads);
+			return document.getElementById("ads") ? false : true;
+		}
+
 		private getCanvasFingerprintFeature(): string {
 			var result: Array<string> = [];
 			var canvas: HTMLCanvasElement = document.createElement("canvas");
@@ -216,7 +243,7 @@ module FingerPrints {
 			var canvas: HTMLCanvasElement = document.createElement("canvas");
 			var gl: WebGLRenderingContext = null;
 			try {
-				gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
+				gl = (<WebGLRenderingContext>canvas.getContext("webgl")) || canvas.getContext("experimental-webgl");
 			} catch (e) { }
 
 			return gl;
@@ -651,7 +678,7 @@ module FingerPrints {
 
 			keys.push(new Date().getTimezoneOffset());
 			if (document.body) {
-				keys.push(typeof (document.body.addBehavior));
+				keys.push(typeof ((<any>document.body).addBehavior));
 			} else {
 				keys.push(typeof undefined);
 			}
@@ -662,15 +689,15 @@ module FingerPrints {
 				keys.push(this.getWebGlFeatures());
 			}
 
-			if (!!(window.indexedDB || window.msIndexedDB)) {
+			if (this.hasIndexedDB() || !!window.msIndexedDB) {
 				keys.push("hasIndexDB");
 			}
 
-			if (!!window.localStorage) {
+			if (this.hasLocalStorage()) {
 				keys.push("hasLocalStorage");
 			}
 
-			if (!!window.sessionStorage) {
+			if (this.hasSessionStorage()) {
 				keys.push("hasSessionStorage");
 			}
 
@@ -679,10 +706,11 @@ module FingerPrints {
 			}
 
 			keys.push(navigator.cpuClass || "not supported");
-			keys.push(navigator.msDoNotTrack || (<any>navigator).doNotTrack || "nope");
+			keys.push((<any>navigator).doNotTrack || "nope");
 			keys.push(navigator.platform);
 			keys.push(this.getPluginsString());
 			keys.push(navigator.mimeTypes);
+			keys.push(this.getAdBlock());
 
 			keys.push(this.specialDetermineIEFunction());
 

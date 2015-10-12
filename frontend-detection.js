@@ -50,8 +50,7 @@ var FrontEndDetection;
                 try {
                     this.verIEtrue = this.customDiv.getComponentVersion(this.classid[this.x], "componentid").replace(/,/g, ".");
                 }
-                catch (e) {
-                }
+                catch (e) { }
                 ;
                 if (this.verIEtrue)
                     break;
