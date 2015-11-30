@@ -32,7 +32,12 @@
     <Content Include="browser-detection.js">
       <DependentUpon>browser-detection.ts</DependentUpon>
     </Content>
-    <Content Include="js\interfaces\IBlockAdBlockOptions.js" />
+    <Content Include="js\interfaces\IBlockAdBlockOptions.js">
+      <DependentUpon>IBlockAdBlockOptions.ts</DependentUpon>
+    </Content>
+    <Content Include="js\interfaces\IBlockAdBlockOptions.js.map">
+      <DependentUpon>IBlockAdBlockOptions.ts</DependentUpon>
+    </Content>
     <Content Include="media-query.js">
       <DependentUpon>media-query.ts</DependentUpon>
     </Content>
@@ -58,7 +63,6 @@
     <Content Include="block-adblock.js.map">
       <DependentUpon>block-adblock.ts</DependentUpon>
     </Content>
-    <Content Include="js\interfaces\IBlockAdBlockOptions.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
