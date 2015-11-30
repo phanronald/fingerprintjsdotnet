@@ -45,7 +45,6 @@
 			}
 
 			return this.cssStyleDeclaration.width === '1px';
-
 		};
 	};
 };

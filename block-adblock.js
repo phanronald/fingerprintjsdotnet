@@ -1,32 +1,33 @@
 /// <reference path="js/interfaces/iblockadblockoptions.ts" />
 var Block;
 (function (Block) {
-    class Adblock {
-        constructor(options) {
-            this.setOption = (options) => {
+    var Adblock = (function () {
+        function Adblock(options) {
+            var _this = this;
+            this.setOption = function (options) {
                 for (var option in options) {
-                    let currentOption = options[option];
-                    this.options[option] = currentOption;
-                    if (this.options.DebugMode) {
-                        this.logEvent('setOption', 'The option "' + option + '" was assigned to "' + currentOption + '"');
+                    var currentOption = options[option];
+                    _this.options[option] = currentOption;
+                    if (_this.options.DebugMode) {
+                        _this.logEvent('setOption', 'The option "' + option + '" was assigned to "' + currentOption + '"');
                     }
                 }
             };
-            this.addEvent = (detected, fn) => {
-                let currentEvent = detected ? this.settings.Event.Detected : this.settings.Event.NotDetected;
+            this.addEvent = function (detected, fn) {
+                var currentEvent = detected ? _this.settings.Event.Detected : _this.settings.Event.NotDetected;
                 currentEvent.push(fn);
-                if (this.options.DebugMode) {
-                    this.logEvent('addEvent', 'A type of event "' + (detected ? 'detected' : 'notDetected') + '" was added');
+                if (_this.options.DebugMode) {
+                    _this.logEvent('addEvent', 'A type of event "' + (detected ? 'detected' : 'notDetected') + '" was added');
                 }
             };
-            this.onDetected = (fn) => {
-                this.addEvent(true, fn);
+            this.onDetected = function (fn) {
+                _this.addEvent(true, fn);
             };
-            this.onNotDetected = (fn) => {
-                this.addEvent(false, fn);
+            this.onNotDetected = function (fn) {
+                _this.addEvent(false, fn);
             };
-            this.init = () => {
-                this.options = {
+            this.init = function () {
+                _this.options = {
                     CheckOnLoad: false,
                     ResetOnEnd: false,
                     LoopCheckTime: 50,
@@ -35,8 +36,8 @@ var Block;
                     BaitStyle: '',
                     DebugMode: false
                 };
-                let eventSettings = { Detected: [], NotDetected: [] };
-                this.settings = {
+                var eventSettings = { Detected: [], NotDetected: [] };
+                _this.settings = {
                     Version: '3.2.0',
                     Bait: null,
                     Checking: false,
@@ -45,11 +46,11 @@ var Block;
                     Event: eventSettings
                 };
             };
-            this.createBait = () => {
-                let bait = document.createElement('div');
-                bait.setAttribute('class', this.options.BaitClass);
-                bait.setAttribute('style', this.options.BaitStyle);
-                this.settings.Bait = {
+            this.createBait = function () {
+                var bait = document.createElement('div');
+                bait.setAttribute('class', _this.options.BaitClass);
+                bait.setAttribute('style', _this.options.BaitStyle);
+                _this.settings.Bait = {
                     BaitNode: window.document.body.appendChild(bait),
                     OffsetHeight: 0,
                     OffsetWidth: 0,
@@ -60,81 +61,81 @@ var Block;
                     OffsetParent: null
                 };
             };
-            this.destroyBait = () => {
-                window.document.body.removeChild(this.settings.Bait.BaitNode);
-                this.settings.Bait = null;
-                if (this.options.DebugMode) {
-                    this.logEvent('destroyBait', 'Bait has been removed');
+            this.destroyBait = function () {
+                window.document.body.removeChild(_this.settings.Bait.BaitNode);
+                _this.settings.Bait = null;
+                if (_this.options.DebugMode) {
+                    _this.logEvent('destroyBait', 'Bait has been removed');
                 }
             };
-            this.check = (loop) => {
+            this.check = function (loop) {
                 if (loop === undefined) {
                     loop = true;
                 }
-                if (this.options.DebugMode) {
-                    this.logEvent('check', 'An audit was requested ' + (loop ? ' with a ' : 'without') + ' loop');
+                if (_this.options.DebugMode) {
+                    _this.logEvent('check', 'An audit was requested ' + (loop ? ' with a ' : 'without') + ' loop');
                 }
-                if (this.settings.Checking && this.options.DebugMode) {
-                    this.logEvent('check', 'A check was cancelled because there is already an ongoing one');
+                if (_this.settings.Checking && _this.options.DebugMode) {
+                    _this.logEvent('check', 'A check was cancelled because there is already an ongoing one');
                     return false;
                 }
-                this.settings.Checking = true;
-                if (this.settings.Bait === null) {
-                    this.createBait();
+                _this.settings.Checking = true;
+                if (_this.settings.Bait === null) {
+                    _this.createBait();
                 }
-                this.settings.LoopNumber = 0;
+                _this.settings.LoopNumber = 0;
                 if (loop) {
-                    this.settings.Loop = setInterval(() => {
-                        this.checkBait(loop);
-                    }, this.options.LoopCheckTime);
+                    _this.settings.Loop = setInterval(function () {
+                        _this.checkBait(loop);
+                    }, _this.options.LoopCheckTime);
                 }
-                setTimeout(() => {
-                    this.checkBait(loop);
+                setTimeout(function () {
+                    _this.checkBait(loop);
                 }, 1);
-                if (this.options.DebugMode) {
-                    this.logEvent('check', 'A check is in progress ... ');
+                if (_this.options.DebugMode) {
+                    _this.logEvent('check', 'A check is in progress ... ');
                 }
                 return true;
             };
-            this.checkBait = (loop) => {
-                let detected = false;
-                if (this.settings.Bait === null) {
-                    this.createBait();
+            this.checkBait = function (loop) {
+                var detected = false;
+                if (_this.settings.Bait === null) {
+                    _this.createBait();
                 }
-                let detectedAdp = window.document.body.getAttribute('adp') != null ||
-                    this.settings.Bait.OffsetParent === null || this.settings.Bait.OffsetHeight == 0 ||
-                    this.settings.Bait.OffsetLeft == 0 || this.settings.Bait.OffsetTop == 0 ||
-                    this.settings.Bait.OffsetWidth == 0 || this.settings.Bait.ClientHeight == 0 ||
-                    this.settings.Bait.ClientWidth == 0;
+                var detectedAdp = window.document.body.getAttribute('adp') != null ||
+                    _this.settings.Bait.OffsetParent === null || _this.settings.Bait.OffsetHeight == 0 ||
+                    _this.settings.Bait.OffsetLeft == 0 || _this.settings.Bait.OffsetTop == 0 ||
+                    _this.settings.Bait.OffsetWidth == 0 || _this.settings.Bait.ClientHeight == 0 ||
+                    _this.settings.Bait.ClientWidth == 0;
                 detected = detectedAdp;
                 //if (window.getComputedStyle !== undefined) {
                 //	let baitTemp = window.getComputedStyle(this.settings.Bait.BaitNode, null);
                 //	detected = baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden');
                 //}
-                if (this.options.DebugMode) {
-                    this.logEvent('checkBait', 'A check (' + (this.settings.LoopNumber + 1) + '/' +
-                        this.options.LoopMaxNumber + ' ~' + (1 + this.settings.LoopNumber * this.options.LoopCheckTime) +
+                if (_this.options.DebugMode) {
+                    _this.logEvent('checkBait', 'A check (' + (_this.settings.LoopNumber + 1) + '/' +
+                        _this.options.LoopMaxNumber + ' ~' + (1 + _this.settings.LoopNumber * _this.options.LoopCheckTime) +
                         'ms) was conducted and detection is ' + (detected ? 'positive' : 'negative'));
                 }
                 if (loop) {
-                    this.settings.LoopNumber++;
-                    if (this.settings.LoopNumber >= this.options.LoopMaxNumber) {
-                        this.stopLoop();
+                    _this.settings.LoopNumber++;
+                    if (_this.settings.LoopNumber >= _this.options.LoopMaxNumber) {
+                        _this.stopLoop();
                     }
                 }
                 if (detected) {
-                    this.stopLoop();
-                    this.destroyBait();
+                    _this.stopLoop();
+                    _this.destroyBait();
                     //emitEvent(true)
                     if (loop) {
-                        this.settings.Checking = false;
+                        _this.settings.Checking = false;
                     }
                 }
                 else if (!loop) {
-                    this.destroyBait();
+                    _this.destroyBait();
                     //emitEvent(false);
                     if (loop) {
-                        this.settings.Checking = false;
+                        _this.settings.Checking = false;
                     }
                 }
                 /*
@@ -147,39 +148,39 @@ var Block;
                 }
             }}*/
             };
-            this.stopLoop = () => {
-                clearInterval(this.settings.Loop);
-                this.settings.Loop = null;
-                this.settings.LoopNumber = 0;
-                if (this.options.DebugMode) {
-                    this.logEvent('stopLoop', 'A loop has been stopped');
+            this.stopLoop = function () {
+                clearInterval(_this.settings.Loop);
+                _this.settings.Loop = null;
+                _this.settings.LoopNumber = 0;
+                if (_this.options.DebugMode) {
+                    _this.logEvent('stopLoop', 'A loop has been stopped');
                 }
             };
-            this.emitEvent = (detected) => {
-                if (this.options.DebugMode) {
-                    this.logEvent('emitEvent', 'An event with a ' + (detected ? 'positive' : 'negative') + ' detection was called');
+            this.emitEvent = function (detected) {
+                if (_this.options.DebugMode) {
+                    _this.logEvent('emitEvent', 'An event with a ' + (detected ? 'positive' : 'negative') + ' detection was called');
                 }
-                var fns = detected ? this.settings.Event.Detected : this.settings.Event.NotDetected;
+                var fns = detected ? _this.settings.Event.Detected : _this.settings.Event.NotDetected;
                 for (var i in fns) {
-                    if (this.options.DebugMode) {
-                        this.logEvent('emitEvent', 'Call function ' + (parseInt(i) + 1) + '/' + fns.length);
+                    if (_this.options.DebugMode) {
+                        _this.logEvent('emitEvent', 'Call function ' + (parseInt(i) + 1) + '/' + fns.length);
                     }
                     if (fns.hasOwnProperty(i)) {
                         fns[i]();
                     }
                 }
-                if (this.options.ResetOnEnd) {
-                    this.clearEvent();
+                if (_this.options.ResetOnEnd) {
+                    _this.clearEvent();
                 }
             };
-            this.clearEvent = () => {
-                this.settings.Event.Detected = [];
-                this.settings.Event.NotDetected = [];
-                if (this.options.DebugMode) {
-                    this.logEvent('clearEvent', 'This event list has been cleared');
+            this.clearEvent = function () {
+                _this.settings.Event.Detected = [];
+                _this.settings.Event.NotDetected = [];
+                if (_this.options.DebugMode) {
+                    _this.logEvent('clearEvent', 'This event list has been cleared');
                 }
             };
-            this.logEvent = (method, message) => {
+            this.logEvent = function (method, message) {
                 console.log('[BlockAdblock][' + method + '] ' + message);
             };
             this.init();
@@ -187,7 +188,8 @@ var Block;
                 this.setOption(options);
             }
         }
-    }
+        return Adblock;
+    })();
     Block.Adblock = Adblock;
 })(Block || (Block = {}));
 //# sourceMappingURL=block-adblock.js.map
