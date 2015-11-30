@@ -19,19 +19,46 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="block-adblock.js">
+      <DependentUpon>block-adblock.ts</DependentUpon>
+    </Content>
     <Content Include="Example.html" />
-    <Content Include="fingerprintjs.js" />
-    <Content Include="frontend-detection.js" />
-    <Content Include="mobile-browser.js" />
+    <Content Include="fingerprintjs.js">
+      <DependentUpon>fingerprintjs.ts</DependentUpon>
+    </Content>
+    <Content Include="frontend-detection.js">
+      <DependentUpon>frontend-detection.ts</DependentUpon>
+    </Content>
+    <Content Include="browser-detection.js">
+      <DependentUpon>browser-detection.ts</DependentUpon>
+    </Content>
+    <Content Include="js\interfaces\IBlockAdBlockOptions.js" />
+    <Content Include="media-query.js">
+      <DependentUpon>media-query.ts</DependentUpon>
+    </Content>
+    <Content Include="test.txt" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.md" />
     <Content Include=".gitignore" />
-    <Content Include="fingerprintjs.js.map" />
-    <Content Include="frontend-detection.js.map" />
+    <Content Include="fingerprintjs.js.map">
+      <DependentUpon>fingerprintjs.ts</DependentUpon>
+    </Content>
+    <Content Include="frontend-detection.js.map">
+      <DependentUpon>frontend-detection.ts</DependentUpon>
+    </Content>
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="mobile-browser.js.map" />
+    <Content Include="browser-detection.map">
+      <DependentUpon>browser-detection.ts</DependentUpon>
+    </Content>
+    <Content Include="media-query.js.map">
+      <DependentUpon>media-query.ts</DependentUpon>
+    </Content>
+    <Content Include="block-adblock.js.map">
+      <DependentUpon>block-adblock.ts</DependentUpon>
+    </Content>
+    <Content Include="js\interfaces\IBlockAdBlockOptions.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -40,9 +67,12 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="block-adblock.ts" />
     <TypeScriptCompile Include="fingerprintjs.ts" />
     <TypeScriptCompile Include="frontend-detection.ts" />
-    <TypeScriptCompile Include="mobile-browser.ts" />
+    <TypeScriptCompile Include="browser-detection.ts" />
+    <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
+    <TypeScriptCompile Include="media-query.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />

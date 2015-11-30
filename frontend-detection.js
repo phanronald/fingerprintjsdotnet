@@ -1,7 +1,7 @@
 var FrontEndDetection;
 (function (FrontEndDetection) {
-    var DectectFont = (function () {
-        function DectectFont() {
+    class DectectFont {
+        constructor() {
             this.baseFonts = ['sans-serif', 'serif'];
             this.fontTextToTest = "wmliilmw";
             this.fontSizeToTest = "72px";
@@ -20,7 +20,7 @@ var FrontEndDetection;
                 this.bodyTag.removeChild(this.testElement);
             }
         }
-        DectectFont.prototype.detect = function (font) {
+        detect(font) {
             for (var index in this.baseFonts) {
                 this.testElement.style.fontFamily = font + ',' + this.baseFonts[index]; // name of the font along with the base font for fallback.
                 this.bodyTag.appendChild(this.testElement);
@@ -29,18 +29,17 @@ var FrontEndDetection;
                 this.detected = this.detected || matched;
             }
             return this.detected;
-        };
-        return DectectFont;
-    })();
+        }
+    }
     FrontEndDetection.DectectFont = DectectFont;
     ;
-    var DetermineIEBrowser = (function () {
-        function DetermineIEBrowser() {
+    class DetermineIEBrowser {
+        constructor() {
             this.x = 0;
             this.classid = ["{45EA75A0-A269-11D1-B5BF-0000F8051515}", "{3AF36230-A269-11D1-B5BF-0000F8051515}", "{89820200-ECBD-11CF-8B85-00AA005B4383}"];
             this.customDiv = document.getElementById("div");
         }
-        DetermineIEBrowser.prototype.trueIEVersion = function () {
+        trueIEVersion() {
             try {
                 this.customDiv.style.behavior = "url(#default#clientcaps)";
             }
@@ -59,11 +58,11 @@ var FrontEndDetection;
             if (!!this.verIEtrue)
                 return this.verIEtrue;
             return "99"; /* edge */
-        };
-        DetermineIEBrowser.prototype.trueIEVersionNumber = function () {
+        }
+        trueIEVersionNumber() {
             return this.trueIEVersion().split(".")[0];
-        };
-        DetermineIEBrowser.prototype.getInternetExplorerVersion = function () {
+        }
+        getInternetExplorerVersion() {
             var rv = -1;
             if (navigator.appName == 'Microsoft Internet Explorer') {
                 var ua = navigator.userAgent;
@@ -78,17 +77,16 @@ var FrontEndDetection;
                     rv = parseFloat(RegExp.$1);
             }
             return rv;
-        };
-        return DetermineIEBrowser;
-    })();
+        }
+    }
     FrontEndDetection.DetermineIEBrowser = DetermineIEBrowser;
     ;
-    var HTML5Shims = (function () {
-        function HTML5Shims() {
+    class HTML5Shims {
+        constructor() {
             this.alphaCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=".split("");
             this.characterLength = this.alphaCharacters.length;
         }
-        HTML5Shims.prototype.isAtobSupported = function (input) {
+        isAtobSupported(input) {
             if (input.length % 4)
                 throw new Error("Invalid Character");
             var sretcarahc = {};
@@ -109,8 +107,8 @@ var FrontEndDetection;
                 c && (result[j++] = c);
             }
             return this.fromCharCode(result, String.fromCharCode, 0x7FFF);
-        };
-        HTML5Shims.prototype.btoaShim = function (input) {
+        }
+        btoaShim(input) {
             var a, b, b1, b2, b3, b4, c, i = 0, result = [];
             this.characterLength = input.length;
             while (i < this.characterLength) {
@@ -127,16 +125,15 @@ var FrontEndDetection;
                 result.push(this.alphaCharacters[b1], this.alphaCharacters[b2], this.alphaCharacters[b3], this.alphaCharacters[b4]);
             }
             return result.join("");
-        };
-        HTML5Shims.prototype.fromCharCode = function (code, input, maxLength) {
+        }
+        fromCharCode(code, input, maxLength) {
             var result = [], slice = result.slice, length = code.length;
             for (var i = 0; i < length; i += maxLength) {
                 result.push(input.apply(null, slice.call(code, i, i + maxLength)));
             }
             return result.join("");
-        };
-        return HTML5Shims;
-    })();
+        }
+    }
     FrontEndDetection.HTML5Shims = HTML5Shims;
     ;
 })(FrontEndDetection || (FrontEndDetection = {}));

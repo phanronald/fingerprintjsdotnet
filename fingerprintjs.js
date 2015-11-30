@@ -1,8 +1,9 @@
 /// <reference path="frontend-detection.ts" />
+/// <reference path="browser-detection.ts" />
 var FingerPrints;
 (function (FingerPrints) {
-    var FingerPrinting = (function () {
-        function FingerPrinting(supportScreenResolution, supportCanvas, supportActiveX, supportScreenOrientation, support64Hash) {
+    class FingerPrinting {
+        constructor(supportScreenResolution, supportCanvas, supportActiveX, supportScreenOrientation, support64Hash) {
             this.nativeForEach = Array.prototype.forEach;
             this.nativeMap = Array.prototype.map;
             this.useScreenResolution = supportScreenResolution || false;
@@ -11,7 +12,7 @@ var FingerPrints;
             this.useScreenOrientation = supportScreenOrientation || false;
             this.use64bitHash = support64Hash || false;
         }
-        FingerPrinting.prototype.each = function (obj, iterator, context) {
+        each(obj, iterator, context) {
             if (obj === null) {
                 return;
             }
@@ -32,8 +33,8 @@ var FingerPrints;
                     }
                 }
             }
-        };
-        FingerPrinting.prototype.map = function (obj, iterator, context) {
+        }
+        map(obj, iterator, context) {
             var results = [];
             if (obj == null)
                 return results;
@@ -43,16 +44,16 @@ var FingerPrints;
                 results[results.length] = iterator.call(context, value, index, list);
             }, context);
             return results;
-        };
-        FingerPrinting.prototype.isCanvasSupported = function () {
-            var elem = document.createElement("canvas");
+        }
+        isCanvasSupported() {
+            let elem = document.createElement("canvas");
             return !!(elem.getContext && elem.getContext("2d"));
-        };
-        FingerPrinting.prototype.isIE = function () {
+        }
+        isIE() {
             return (navigator.appName === "Microsoft Internet Explorer" ||
                 (navigator.appName === "Netscape" && /Trident/.test(navigator.userAgent)));
-        };
-        FingerPrinting.prototype.getPluginsString = function () {
+        }
+        getPluginsString() {
             if (this.isIE() && this.useIEActiveX) {
                 var allPluginExceptJava = this.getIEPluginsString();
                 var javaVersionPlugin = this.determineJavaVersion();
@@ -61,16 +62,16 @@ var FingerPrints;
             else {
                 return this.getRegularPluginsString();
             }
-        };
-        FingerPrinting.prototype.getRegularPluginsString = function () {
+        }
+        getRegularPluginsString() {
             return this.map(navigator.plugins, function (p) {
                 var mimeTypes = this.map(p, function (mt) {
                     return [mt.type, mt.suffixes].join('~');
                 }).join(',');
                 return [p.name, p.description, mimeTypes].join('::');
             }, this).join(';');
-        };
-        FingerPrinting.prototype.getIEPluginsString = function () {
+        }
+        getIEPluginsString() {
             if (window.ActiveXObject) {
                 var names = [
                     'ShockwaveFlash.ShockwaveFlash',
@@ -106,10 +107,9 @@ var FingerPrints;
             else {
                 return "";
             }
-        };
-        FingerPrinting.prototype.getAvailableScreenResolution = function () {
+        }
+        getAvailableScreenResolution() {
             var resolution;
-            var available;
             if (this.useScreenOrientation) {
                 resolution = (screen.height > screen.width) ? [screen.height, screen.width] : [screen.width, screen.height];
             }
@@ -117,8 +117,8 @@ var FingerPrints;
                 resolution = [screen.height, screen.width];
             }
             return resolution;
-        };
-        FingerPrinting.prototype.getScreenResolution = function () {
+        }
+        getScreenResolution() {
             var available;
             if (screen.availWidth && screen.availHeight) {
                 if (this.useScreenOrientation) {
@@ -129,38 +129,38 @@ var FingerPrints;
                 }
             }
             return available;
-        };
-        FingerPrinting.prototype.hasSessionStorage = function () {
+        }
+        hasSessionStorage() {
             try {
                 return !!window.sessionStorage;
             }
             catch (e) {
                 return true; // SecurityError when referencing it means it exists
             }
-        };
-        FingerPrinting.prototype.hasLocalStorage = function () {
+        }
+        hasLocalStorage() {
             try {
                 return !!window.localStorage;
             }
             catch (e) {
                 return true; // SecurityError when referencing it means it exists
             }
-        };
-        FingerPrinting.prototype.hasIndexedDB = function () {
+        }
+        hasIndexedDB() {
             return !!window.indexedDB;
-        };
-        FingerPrinting.prototype.getAdBlock = function () {
-            var ads = document.createElement("div");
+        }
+        getAdBlock() {
+            let ads = document.createElement("div");
             ads.setAttribute("id", "ads");
             document.body.appendChild(ads);
             return document.getElementById("ads") ? false : true;
-        };
-        FingerPrinting.prototype.getCanvasFingerprintFeature = function () {
-            var result = [];
-            var canvas = document.createElement("canvas");
+        }
+        getCanvasFingerprintFeature() {
+            let result = [];
+            let canvas = document.createElement("canvas");
             canvas.width = 2000;
             canvas.height = 200;
-            var ctx = canvas.getContext("2d");
+            let ctx = canvas.getContext("2d");
             try {
                 ctx.globalCompositeOperation = "screen";
             }
@@ -170,18 +170,18 @@ var FingerPrints;
             ctx.rect(2, 2, 6, 6);
             result.push("canvas winding:" + ((ctx.isPointInPath(5, 5, "evenodd") === false) ? "yes" : "no"));
             return result.join("~");
-        };
-        FingerPrinting.prototype.getCanvasFingerprint = function () {
-            var result = [];
-            var canvas = document.createElement("canvas");
+        }
+        getCanvasFingerprint() {
+            let result = [];
+            let canvas = document.createElement("canvas");
             canvas.width = 2000;
             canvas.height = 200;
-            var ctx = canvas.getContext("2d");
+            let ctx = canvas.getContext("2d");
             try {
                 ctx.globalCompositeOperation = "screen";
             }
             catch (e) { }
-            var txt = "https://kawasaki.com/valve for a better software process";
+            let txt = "https://kawasaki.com/valve for a better software process";
             ctx.textBaseline = "top";
             ctx.font = "72px 'DamascusLight'";
             ctx.fillStyle = "#f60";
@@ -215,21 +215,21 @@ var FingerPrints;
             ctx.arc(75, 75, 25, 0, Math.PI * 2, true);
             ctx.fill("evenodd");
             canvas.toDataURL().replace("data:image/png;base64,", "");
-            var base64string = canvas.toDataURL().replace("data:image/png;base64,", "");
+            let base64string = canvas.toDataURL().replace("data:image/png;base64,", "");
             return base64string;
-        };
-        FingerPrinting.prototype.getWebglCanvas = function () {
-            var canvas = document.createElement("canvas");
-            var gl = null;
+        }
+        getWebglCanvas() {
+            let canvas = document.createElement("canvas");
+            let gl = null;
             try {
                 gl = canvas.getContext("webgl") || canvas.getContext("experimental-webgl");
             }
             catch (e) { }
             return gl;
-        };
-        FingerPrinting.prototype.getWebGlFeatures = function () {
-            var gl;
-            var fa2s = function (fa) {
+        }
+        getWebGlFeatures() {
+            let gl;
+            let fa2s = function (fa) {
                 gl.clearColor(0.0, 0.0, 0.0, 1.0);
                 gl.enable(gl.DEPTH_TEST);
                 gl.depthFunc(gl.LEQUAL);
@@ -237,16 +237,16 @@ var FingerPrints;
                 return "[" + fa[0] + ", " + fa[1] + "]";
             };
             var maxAnisotropy = function (gl) {
-                var anisotropy, ext = gl.getExtension("EXT_texture_filter_anisotropic") || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+                let anisotropy, ext = gl.getExtension("EXT_texture_filter_anisotropic") || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
                 return ext ? (anisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT), 0 === anisotropy && (anisotropy = 2), anisotropy) : null;
             };
             gl = this.getWebglCanvas();
             if (!gl) {
                 return null;
             }
-            var result = [];
-            var vShaderTemplate = "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}";
-            var fShaderTemplate = "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}";
+            let result = [];
+            let vShaderTemplate = "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}";
+            let fShaderTemplate = "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}";
             var vertexPosBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexPosBuffer);
             var vertices = new Float32Array([-.2, -.9, 0, .4, -.26, 0, 0, .732134444, 0]);
@@ -335,9 +335,9 @@ var FingerPrints;
             result.push("webgl fragment shader low int precision rangeMin:" + gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.LOW_INT).rangeMin);
             result.push("webgl fragment shader low int precision rangeMax:" + gl.getShaderPrecisionFormat(gl.FRAGMENT_SHADER, gl.LOW_INT).rangeMax);
             return result.join("~");
-        };
-        FingerPrinting.prototype.getFontsInstalled = function () {
-            var fonts = ["algerian", "Andalus", "Angsana New", "AngsanaUPC",
+        }
+        getFontsInstalled() {
+            let fonts = ["algerian", "Andalus", "Angsana New", "AngsanaUPC",
                 "Aparajita", "Apple Symbols", "Arabic Typesetting", "Arial", "Arial Black", "Arial Narrow",
                 "Arial Rounded MT Bold", "Arial Unicode MS", "Baskerville Old Face", "Batang", "BatangChe",
                 "Bauhaus 93", "Bell MT", "Berlin Sans FB", "Bitstream Charter", "Bitstream Vera Sans",
@@ -377,31 +377,69 @@ var FingerPrints;
                 fontDictionary.push(fonts[i] + " " + String(result));
             }
             return fontDictionary;
-        };
-        FingerPrinting.prototype.specialDetermineIEFunction = function () {
-            var ieAbilities = [];
+        }
+        specialDetermineIEFunction() {
+            let ieAbilities = [];
             ieAbilities.push("gteIE5-" + !document.all);
             ieAbilities.push("lteIE7-" + (!document.all && !document.querySelector));
             ieAbilities.push("lteIE8-" + (!document.all && !document.addEventListener));
             ieAbilities.push("lteIE9-" + (!document.all && !window.atob));
             ieAbilities.push("gteIE10-" + (!document.all && !!window.atob));
             return ieAbilities.join(";");
-        };
-        FingerPrinting.prototype.determineJavaVersion = function () {
-            var finalVersion = "";
-            var javaAppletElement = document.getElementById('customJavaId');
-            var isJavaInstalled = (javaAppletElement && javaAppletElement.jvms) ? true : false;
-            if (isJavaInstalled) {
-                var javaVirtualMachine = javaAppletElement.jvms;
-                var javaVersionArray = new Array();
-                for (var i = 0; i < javaVirtualMachine.getLength(); i++) {
-                    javaVersionArray[i] = javaVirtualMachine.get(i).version;
+        }
+        determineJavaVersion() {
+            let finalVersion = "";
+            let javaAppletElement = document.getElementById('customJavaId');
+            if (javaAppletElement != null) {
+                var isJavaInstalled = (javaAppletElement && javaAppletElement.jvms) ? true : false;
+                if (isJavaInstalled) {
+                    let javaVirtualMachine = javaAppletElement.jvms;
+                    let javaVersionArray = new Array();
+                    for (var i = 0; i < javaVirtualMachine.getLength(); i++) {
+                        javaVersionArray[i] = javaVirtualMachine.get(i).version;
+                    }
+                    finalVersion = javaVersionArray.join('~');
                 }
-                finalVersion = javaVersionArray.join('~');
             }
             return finalVersion;
-        };
-        FingerPrinting.prototype.murmurhash3_32_gc = function (key, seed) {
+        }
+        getTouchSupport() {
+            let maxTouchPoints = 0;
+            let touchEvent = false;
+            if (typeof navigator.maxTouchPoints !== "undefined") {
+                maxTouchPoints = navigator.maxTouchPoints;
+            }
+            else if (typeof navigator.msMaxTouchPoints !== "undefined") {
+                maxTouchPoints = navigator.msMaxTouchPoints;
+            }
+            try {
+                document.createEvent("TouchEvent");
+                touchEvent = true;
+            }
+            catch (exception) {
+            }
+            var touchStart = "ontouchstart" in window;
+            return [maxTouchPoints, touchEvent, touchStart];
+        }
+        getScreenOrientation() {
+            let isPortrait = window.matchMedia("(orientation: portrait)").matches;
+            let currentDegreeOrientation = window.orientation;
+            return isPortrait + ";" + currentDegreeOrientation;
+        }
+        determineIfInPornoMode() {
+            var fileRequestSystem = window.RequestFileSystem || window.webkitRequestFileSystem;
+            if (!fileRequestSystem) {
+                return false;
+            }
+            else {
+                fileRequestSystem(window.TEMPORARY, 100, function (fs) {
+                    return false;
+                }, function (err) {
+                    return true;
+                });
+            }
+        }
+        murmurhash3_32_gc(key, seed) {
             var remainder, bytes, h1, h1b, c1, c2, k1, i;
             remainder = key.length & 3; // key.length % 4
             bytes = key.length - remainder;
@@ -442,9 +480,9 @@ var FingerPrints;
             h1 = ((((h1 & 0xffff) * 0xc2b2ae35) + ((((h1 >>> 16) * 0xc2b2ae35) & 0xffff) << 16))) & 0xffffffff;
             h1 ^= h1 >>> 16;
             return h1 >>> 0;
-        };
+        }
         /**/
-        FingerPrinting.prototype.x64Add = function (m, n) {
+        x64Add(m, n) {
             m = [m[0] >>> 16, m[0] & 0xffff, m[1] >>> 16, m[1] & 0xffff];
             n = [n[0] >>> 16, n[0] & 0xffff, n[1] >>> 16, n[1] & 0xffff];
             var o = [0, 0, 0, 0];
@@ -460,8 +498,8 @@ var FingerPrints;
             o[0] += m[0] + n[0];
             o[0] &= 0xffff;
             return [(o[0] << 16) | o[1], (o[2] << 16) | o[3]];
-        };
-        FingerPrinting.prototype.x64Multiply = function (m, n) {
+        }
+        x64Multiply(m, n) {
             m = [m[0] >>> 16, m[0] & 0xffff, m[1] >>> 16, m[1] & 0xffff];
             n = [n[0] >>> 16, n[0] & 0xffff, n[1] >>> 16, n[1] & 0xffff];
             var o = [0, 0, 0, 0];
@@ -486,8 +524,8 @@ var FingerPrints;
             o[0] += (m[0] * n[3]) + (m[1] * n[2]) + (m[2] * n[1]) + (m[3] * n[0]);
             o[0] &= 0xffff;
             return [(o[0] << 16) | o[1], (o[2] << 16) | o[3]];
-        };
-        FingerPrinting.prototype.x64Rotl = function (m, n) {
+        }
+        x64Rotl(m, n) {
             n %= 64;
             if (n === 32) {
                 return [m[1], m[0]];
@@ -499,8 +537,8 @@ var FingerPrints;
                 n -= 32;
                 return [(m[1] << n) | (m[0] >>> (32 - n)), (m[0] << n) | (m[1] >>> (32 - n))];
             }
-        };
-        FingerPrinting.prototype.x64LeftShift = function (m, n) {
+        }
+        x64LeftShift(m, n) {
             n %= 64;
             if (n === 0) {
                 return m;
@@ -511,19 +549,19 @@ var FingerPrints;
             else {
                 return [m[1] << (n - 32), 0];
             }
-        };
-        FingerPrinting.prototype.x64Xor = function (m, n) {
+        }
+        x64Xor(m, n) {
             return [m[0] ^ n[0], m[1] ^ n[1]];
-        };
-        FingerPrinting.prototype.x64Fmix = function (h) {
+        }
+        x64Fmix(h) {
             h = this.x64Xor(h, [0, h[0] >>> 1]);
             h = this.x64Multiply(h, [0xff51afd7, 0xed558ccd]);
             h = this.x64Xor(h, [0, h[0] >>> 1]);
             h = this.x64Multiply(h, [0xc4ceb9fe, 0x1a85ec53]);
             h = this.x64Xor(h, [0, h[0] >>> 1]);
             return h;
-        };
-        FingerPrinting.prototype.murmurhash3_64_gc = function (key, seed) {
+        }
+        murmurhash3_64_gc(key, seed) {
             key = key || "";
             seed = seed || 0;
             var remainder = key.length % 16;
@@ -603,9 +641,9 @@ var FingerPrints;
             h1 = this.x64Add(h1, h2);
             h2 = this.x64Add(h2, h1);
             return ("00000000" + (h1[0] >>> 0).toString(16)).slice(-8) + ("00000000" + (h1[1] >>> 0).toString(16)).slice(-8) + ("00000000" + (h2[0] >>> 0).toString(16)).slice(-8) + ("00000000" + (h2[1] >>> 0).toString(16)).slice(-8);
-        };
+        }
         /**/
-        FingerPrinting.prototype.getFingerPrintHash = function () {
+        getFingerPrintHash() {
             var keys = [];
             keys.push(navigator.userAgent);
             keys.push(navigator.language);
@@ -650,14 +688,15 @@ var FingerPrints;
             keys.push(this.getPluginsString());
             keys.push(navigator.mimeTypes);
             keys.push(this.getAdBlock());
+            keys.push(this.getTouchSupport());
+            keys.push(new BrowserDetection.Mobile().detectByRegex());
             keys.push(this.specialDetermineIEFunction());
             if (this.use64bitHash) {
                 return this.murmurhash3_64_gc(keys.join("###"), 31);
             }
             return this.murmurhash3_32_gc(keys.join('###'), 31);
-        };
-        return FingerPrinting;
-    })();
+        }
+    }
     FingerPrints.FingerPrinting = FingerPrinting;
 })(FingerPrints || (FingerPrints = {}));
 //# sourceMappingURL=fingerprintjs.js.map

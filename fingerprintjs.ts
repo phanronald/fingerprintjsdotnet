@@ -1,4 +1,5 @@
 ﻿/// <reference path="frontend-detection.ts" />
+/// <reference path="browser-detection.ts" />
 
 module FingerPrints {
 	export class FingerPrinting {
@@ -53,7 +54,7 @@ module FingerPrints {
 		}
 
 		private isCanvasSupported(): boolean {
-			var elem: HTMLCanvasElement = document.createElement("canvas");
+			let elem: HTMLCanvasElement = document.createElement("canvas");
 			return !!(elem.getContext && elem.getContext("2d"));
 		}
 
@@ -121,7 +122,6 @@ module FingerPrints {
 
 		private getAvailableScreenResolution(): Array<number> {
 			var resolution: Array<number>;
-			var available;
 			if (this.useScreenOrientation) {
 				resolution = (screen.height > screen.width) ? [screen.height, screen.width] : [screen.width, screen.height];
 			}
@@ -167,18 +167,18 @@ module FingerPrints {
 		}
 
 		private getAdBlock(): any {
-			var ads: HTMLDivElement = document.createElement("div");
+			let ads: HTMLDivElement = document.createElement("div");
 			ads.setAttribute("id", "ads");
 			document.body.appendChild(ads);
 			return document.getElementById("ads") ? false : true;
 		}
 
 		private getCanvasFingerprintFeature(): string {
-			var result: Array<string> = [];
-			var canvas: HTMLCanvasElement = document.createElement("canvas");
+			let result: Array<string> = [];
+			let canvas: HTMLCanvasElement = document.createElement("canvas");
 			canvas.width = 2000;
 			canvas.height = 200;
-			var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+			let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 
 			try {
 				ctx.globalCompositeOperation = "screen";
@@ -191,17 +191,17 @@ module FingerPrints {
 		}
 
 		private getCanvasFingerprint(): string {
-			var result: Array<string> = [];
-			var canvas: HTMLCanvasElement = document.createElement("canvas");
+			let result: Array<string> = [];
+			let canvas: HTMLCanvasElement = document.createElement("canvas");
 			canvas.width = 2000;
 			canvas.height = 200;
-			var ctx: CanvasRenderingContext2D = canvas.getContext("2d");
+			let ctx: CanvasRenderingContext2D = canvas.getContext("2d");
 
 			try {
 				ctx.globalCompositeOperation = "screen";
 			} catch (e) { }
 
-			var txt = "https://kawasaki.com/valve for a better software process";
+			let txt = "https://kawasaki.com/valve for a better software process";
 			ctx.textBaseline = "top";
 			ctx.font = "72px 'DamascusLight'";
 			ctx.fillStyle = "#f60";
@@ -235,13 +235,13 @@ module FingerPrints {
 			ctx.arc(75, 75, 25, 0, Math.PI * 2, true);
 			ctx.fill("evenodd");
 			canvas.toDataURL().replace("data:image/png;base64,", "");
-			var base64string: string = canvas.toDataURL().replace("data:image/png;base64,", "");
+			let base64string: string = canvas.toDataURL().replace("data:image/png;base64,", "");
 			return base64string;
 		}
 
 		private getWebglCanvas(): WebGLRenderingContext {
-			var canvas: HTMLCanvasElement = document.createElement("canvas");
-			var gl: WebGLRenderingContext = null;
+			let canvas: HTMLCanvasElement = document.createElement("canvas");
+			let gl: WebGLRenderingContext = null;
 			try {
 				gl = (<WebGLRenderingContext>canvas.getContext("webgl")) || canvas.getContext("experimental-webgl");
 			} catch (e) { }
@@ -250,8 +250,8 @@ module FingerPrints {
 		}
 
 		private getWebGlFeatures(): string {
-			var gl: WebGLRenderingContext;
-			var fa2s = function (fa): string {
+			let gl: WebGLRenderingContext;
+			let fa2s = function (fa): string {
 				gl.clearColor(0.0, 0.0, 0.0, 1.0);
 				gl.enable(gl.DEPTH_TEST);
 				gl.depthFunc(gl.LEQUAL);
@@ -260,7 +260,7 @@ module FingerPrints {
 			};
 
 			var maxAnisotropy = function (gl) {
-				var anisotropy, ext = gl.getExtension("EXT_texture_filter_anisotropic") || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
+				let anisotropy, ext = gl.getExtension("EXT_texture_filter_anisotropic") || gl.getExtension("WEBKIT_EXT_texture_filter_anisotropic") || gl.getExtension("MOZ_EXT_texture_filter_anisotropic");
 				return ext ? (anisotropy = gl.getParameter(ext.MAX_TEXTURE_MAX_ANISOTROPY_EXT), 0 === anisotropy && (anisotropy = 2), anisotropy) : null;
 			};
 
@@ -269,9 +269,9 @@ module FingerPrints {
 				return null;
 			}
 
-			var result: Array<string> = [];
-			var vShaderTemplate = "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}";
-			var fShaderTemplate = "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}";
+			let result: Array<string> = [];
+			let vShaderTemplate = "attribute vec2 attrVertex;varying vec2 varyinTexCoordinate;uniform vec2 uniformOffset;void main(){varyinTexCoordinate=attrVertex+uniformOffset;gl_Position=vec4(attrVertex,0,1);}";
+			let fShaderTemplate = "precision mediump float;varying vec2 varyinTexCoordinate;void main() {gl_FragColor=vec4(varyinTexCoordinate,0,1);}";
 			var vertexPosBuffer: WebGLBuffer = gl.createBuffer();
 			gl.bindBuffer(gl.ARRAY_BUFFER, vertexPosBuffer);
 			var vertices = new Float32Array([-.2, -.9, 0, .4, -.26, 0, 0, .732134444, 0]);
@@ -367,7 +367,7 @@ module FingerPrints {
 		}
 
 		private getFontsInstalled(): Array<string> {
-			var fonts: Array<string> = ["algerian", "Andalus", "Angsana New", "AngsanaUPC",
+			let fonts: Array<string> = ["algerian", "Andalus", "Angsana New", "AngsanaUPC",
 				"Aparajita", "Apple Symbols", "Arabic Typesetting", "Arial", "Arial Black", "Arial Narrow",
 				"Arial Rounded MT Bold", "Arial Unicode MS", "Baskerville Old Face", "Batang", "BatangChe",
 				"Bauhaus 93", "Bell MT", "Berlin Sans FB", "Bitstream Charter", "Bitstream Vera Sans",
@@ -412,7 +412,7 @@ module FingerPrints {
 		}
 
 		private specialDetermineIEFunction(): string {
-			var ieAbilities = [];
+			let ieAbilities = [];
 			ieAbilities.push("gteIE5-" + !document.all);
 			ieAbilities.push("lteIE7-" + (!document.all && !document.querySelector));
 			ieAbilities.push("lteIE8-" + (!document.all && !document.addEventListener));
@@ -422,20 +422,65 @@ module FingerPrints {
 		}
 
 		private determineJavaVersion(): string {
-			var finalVersion: string = "";
-			var javaAppletElement: HTMLElement = document.getElementById('customJavaId');
-			var isJavaInstalled: boolean = (javaAppletElement && (<any>javaAppletElement).jvms) ? true : false;
-			if (isJavaInstalled) {
-				var javaVirtualMachine: any = (<any>javaAppletElement).jvms;
-				var javaVersionArray: Array<string> = new Array();
+			let finalVersion: string = "";
+			let javaAppletElement: HTMLElement = document.getElementById('customJavaId');
+			if (javaAppletElement != null) {
+				var isJavaInstalled: boolean = (javaAppletElement && (<any>javaAppletElement).jvms) ? true : false;
+				if (isJavaInstalled) {
+					let javaVirtualMachine: any = (<any>javaAppletElement).jvms;
+					let javaVersionArray: Array<string> = new Array();
 
-				for (var i = 0; i < javaVirtualMachine.getLength(); i++) {
-					javaVersionArray[i] = javaVirtualMachine.get(i).version;
+					for (var i = 0; i < javaVirtualMachine.getLength(); i++) {
+						javaVersionArray[i] = javaVirtualMachine.get(i).version;
+					}
+
+					finalVersion = javaVersionArray.join('~');
 				}
-
-				finalVersion = javaVersionArray.join('~');
 			}
 			return finalVersion;
+		}
+
+		private getTouchSupport(): (boolean | number)[] {
+
+			let maxTouchPoints: number = 0;
+			let touchEvent: boolean = false;
+
+			if (typeof navigator.maxTouchPoints !== "undefined") {
+				maxTouchPoints = navigator.maxTouchPoints;
+			} else if (typeof navigator.msMaxTouchPoints !== "undefined") {
+				maxTouchPoints = navigator.msMaxTouchPoints;
+			}
+
+			try {
+				document.createEvent("TouchEvent");
+				touchEvent = true;
+			}
+			catch (exception) {
+			}
+
+			var touchStart:boolean = "ontouchstart" in window;
+
+			return [maxTouchPoints, touchEvent, touchStart];
+		}
+
+		private getScreenOrientation(): string {
+			let isPortrait: boolean = window.matchMedia("(orientation: portrait)").matches;
+			let currentDegreeOrientation: (string | number) = window.orientation;
+
+			return isPortrait + ";" + currentDegreeOrientation;
+		}
+
+		private determineIfInPornoMode(): boolean {
+			var fileRequestSystem = (<any>window).RequestFileSystem || (<any>window).webkitRequestFileSystem;
+			if (!fileRequestSystem) {
+				return false;
+			} else {
+				fileRequestSystem((<any>window).TEMPORARY, 100, function (fs) {
+					return false;
+				}, function (err) {
+					return true;
+				});
+			}
 		}
 
 		private murmurhash3_32_gc(key, seed): number {
@@ -711,7 +756,8 @@ module FingerPrints {
 			keys.push(this.getPluginsString());
 			keys.push(navigator.mimeTypes);
 			keys.push(this.getAdBlock());
-
+			keys.push(this.getTouchSupport());
+			keys.push(new BrowserDetection.Mobile().detectByRegex());
 			keys.push(this.specialDetermineIEFunction());
 
 			if (this.use64bitHash) {
