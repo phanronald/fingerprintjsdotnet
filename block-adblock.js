@@ -108,10 +108,10 @@ var Block;
                     _this.settings.Bait.OffsetWidth == 0 || _this.settings.Bait.ClientHeight == 0 ||
                     _this.settings.Bait.ClientWidth == 0;
                 detected = detectedAdp;
-                //if (window.getComputedStyle !== undefined) {
-                //	let baitTemp = window.getComputedStyle(this.settings.Bait.BaitNode, null);
-                //	detected = baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden');
-                //}
+                if (window.getComputedStyle !== undefined) {
+                    var baitTemp = window.getComputedStyle(_this.settings.Bait.BaitNode, null);
+                    detected = baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden';
+                }
                 if (_this.options.DebugMode) {
                     _this.logEvent('checkBait', 'A check (' + (_this.settings.LoopNumber + 1) + '/' +
                         _this.options.LoopMaxNumber + ' ~' + (1 + _this.settings.LoopNumber * _this.options.LoopCheckTime) +
@@ -126,27 +126,24 @@ var Block;
                 if (detected) {
                     _this.stopLoop();
                     _this.destroyBait();
-                    //emitEvent(true)
+                    _this.emitEvent(true);
                     if (loop) {
                         _this.settings.Checking = false;
                     }
                 }
                 else if (!loop) {
                     _this.destroyBait();
-                    //emitEvent(false);
+                    _this.emitEvent(false);
                     if (loop) {
                         _this.settings.Checking = false;
                     }
                 }
-                /*
-            
-            if(window.getComputedStyle !== undefined) {
-                var baitTemp = window.getComputedStyle(this._var.bait, null);
-                if(baitTemp.getPropertyValue('display') == 'none'
-                || baitTemp.getPropertyValue('visibility') == 'hidden') {
-                    detected = true;
+                if (window.getComputedStyle !== undefined) {
+                    var baitTemp = window.getComputedStyle(_this.settings.Bait.BaitNode, null);
+                    if (baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden') {
+                        detected = true;
+                    }
                 }
-            }}*/
             };
             this.stopLoop = function () {
                 clearInterval(_this.settings.Loop);
@@ -189,7 +186,7 @@ var Block;
             }
         }
         return Adblock;
-    })();
+    }());
     Block.Adblock = Adblock;
 })(Block || (Block = {}));
 //# sourceMappingURL=block-adblock.js.map

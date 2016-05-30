@@ -20,21 +20,21 @@ var BrowserDetection;
             }
         };
         return Mobile;
-    })();
+    }());
     BrowserDetection.Mobile = Mobile;
     ;
     var Desktop = (function () {
         function Desktop() {
         }
         return Desktop;
-    })();
+    }());
     BrowserDetection.Desktop = Desktop;
     ;
     var Tablet = (function () {
         function Tablet() {
         }
         return Tablet;
-    })();
+    }());
     BrowserDetection.Tablet = Tablet;
     ;
 })(BrowserDetection || (BrowserDetection = {}));

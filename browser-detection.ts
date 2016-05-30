@@ -1,4 +1,4 @@
-﻿module BrowserDetection {
+﻿namespace BrowserDetection {
 	export class Mobile {
 
 		private mobileBrowserRegex: RegExp;

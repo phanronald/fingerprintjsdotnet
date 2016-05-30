@@ -1,12 +1,12 @@
 ﻿/// <reference path="js/interfaces/iblockadblockoptions.ts" />
 
-module Block {
+namespace Block {
 	export class Adblock {
 
 		private options: IBlockAdblockOptions;
 		private settings: IBlockAdblockSettings;
 
-		constructor(options: IBlockAdblockOptions) {
+		constructor(options?: IBlockAdblockOptions) {
 			this.init();
 
 			if (options !== undefined) {
@@ -139,10 +139,10 @@ module Block {
 
 			detected = detectedAdp;
 
-			//if (window.getComputedStyle !== undefined) {
-			//	let baitTemp = window.getComputedStyle(this.settings.Bait.BaitNode, null);
-			//	detected = baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden');
-			//}
+			if (window.getComputedStyle !== undefined) {
+				let baitTemp = window.getComputedStyle(<HTMLElement>this.settings.Bait.BaitNode, null);
+				detected = baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden';
+			}
 
 			if (this.options.DebugMode) {
 				this.logEvent('checkBait', 'A check (' + (this.settings.LoopNumber + 1) + '/' +
@@ -160,28 +160,25 @@ module Block {
 			if (detected) {
 				this.stopLoop();
 				this.destroyBait();
-				//emitEvent(true)
+				this.emitEvent(true)
 				if (loop) {
 					this.settings.Checking = false;
 				}
 			}
 			else if (!loop) {
 				this.destroyBait();
-				//emitEvent(false);
+				this.emitEvent(false);
 				if (loop) {
 					this.settings.Checking = false;
 				}
 			}
 
-			/*
-		
-		if(window.getComputedStyle !== undefined) {
-			var baitTemp = window.getComputedStyle(this._var.bait, null);
-			if(baitTemp.getPropertyValue('display') == 'none'
-			|| baitTemp.getPropertyValue('visibility') == 'hidden') {
-				detected = true;
+			if (window.getComputedStyle !== undefined) {
+				let baitTemp = window.getComputedStyle(<HTMLElement>this.settings.Bait.BaitNode, null);
+				if (baitTemp.getPropertyValue('display') == 'none' || baitTemp.getPropertyValue('visibility') == 'hidden') {
+					detected = true;
+				}
 			}
-		}}*/
 		}
 
 		private stopLoop = (): void => {

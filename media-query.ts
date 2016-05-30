@@ -1,4 +1,4 @@
-﻿module MediaQuery {
+﻿namespace MediaQuery {
 	export class MatchMedia {
 
 		private styleMedia: StyleMedia;

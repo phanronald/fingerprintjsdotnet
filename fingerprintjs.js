@@ -1,15 +1,17 @@
 /// <reference path="frontend-detection.ts" />
 /// <reference path="browser-detection.ts" />
+/// <reference path="block-adblock.ts" />
 var FingerPrints;
 (function (FingerPrints) {
     var FingerPrinting = (function () {
-        function FingerPrinting(supportScreenResolution, supportCanvas, supportActiveX, supportScreenOrientation, support64Hash) {
+        function FingerPrinting(supportScreenResolution, supportCanvas, supportActiveX, supportScreenOrientation, supportAdvancedAdblock, support64Hash) {
             this.nativeForEach = Array.prototype.forEach;
             this.nativeMap = Array.prototype.map;
             this.useScreenResolution = supportScreenResolution || false;
             this.useCanvas = supportCanvas || false;
             this.useIEActiveX = supportActiveX || false;
             this.useScreenOrientation = supportScreenOrientation || false;
+            this.useAdvancedAdblockDetection = supportAdvancedAdblock || false;
             this.use64bitHash = support64Hash || false;
         }
         FingerPrinting.prototype.each = function (obj, iterator, context) {
@@ -150,10 +152,22 @@ var FingerPrints;
             return !!window.indexedDB;
         };
         FingerPrinting.prototype.getAdBlock = function () {
-            var ads = document.createElement("div");
-            ads.setAttribute("id", "ads");
-            document.body.appendChild(ads);
-            return document.getElementById("ads") ? false : true;
+            if (this.useAdvancedAdblockDetection) {
+                var advancedAdblock = new Block.Adblock();
+                if (typeof advancedAdblock === "undefined") {
+                    return true;
+                }
+                else {
+                    advancedAdblock.onDetected(function () {
+                    });
+                }
+            }
+            else {
+                var ads = document.createElement("div");
+                ads.setAttribute("id", "ads");
+                document.body.appendChild(ads);
+                return document.getElementById("ads") ? false : true;
+            }
         };
         FingerPrinting.prototype.getCanvasFingerprintFeature = function () {
             var result = [];
@@ -697,7 +711,7 @@ var FingerPrints;
             return this.murmurhash3_32_gc(keys.join('###'), 31);
         };
         return FingerPrinting;
-    })();
+    }());
     FingerPrints.FingerPrinting = FingerPrinting;
 })(FingerPrints || (FingerPrints = {}));
 //# sourceMappingURL=fingerprintjs.js.map

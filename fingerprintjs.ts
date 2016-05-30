@@ -1,7 +1,8 @@
 ﻿/// <reference path="frontend-detection.ts" />
 /// <reference path="browser-detection.ts" />
+/// <reference path="block-adblock.ts" />
 
-module FingerPrints {
+namespace FingerPrints {
 	export class FingerPrinting {
 		private nativeForEach: (callbackfn: (value: any, index: number, array: any[]) => void, thisArg?: any) => void;
 		private nativeMap: (callbackfn: (value: any, index: number, array: any[]) => any, thisArg?: any) => any;
@@ -10,17 +11,19 @@ module FingerPrints {
 		private useIEActiveX: boolean;
 		private fingerprintHash: number;
 		private useScreenOrientation: boolean;
+		private useAdvancedAdblockDetection: boolean;
 		private use64bitHash: boolean;
 
 		constructor(supportScreenResolution?: boolean, supportCanvas?: boolean,
 			supportActiveX?: boolean, supportScreenOrientation?: boolean,
-			support64Hash?: boolean) {
+			supportAdvancedAdblock?: boolean, support64Hash?: boolean) {
 			this.nativeForEach = Array.prototype.forEach;
 			this.nativeMap = Array.prototype.map;
 			this.useScreenResolution = supportScreenResolution || false;
 			this.useCanvas = supportCanvas || false;
 			this.useIEActiveX = supportActiveX || false;
 			this.useScreenOrientation = supportScreenOrientation || false;
+			this.useAdvancedAdblockDetection = supportAdvancedAdblock || false;
 			this.use64bitHash = support64Hash || false;
 		}
 
@@ -166,11 +169,23 @@ module FingerPrints {
 			return !!window.indexedDB;
 		}
 
-		private getAdBlock(): any {
-			let ads: HTMLDivElement = document.createElement("div");
-			ads.setAttribute("id", "ads");
-			document.body.appendChild(ads);
-			return document.getElementById("ads") ? false : true;
+		private getAdBlock(): boolean {
+			if (this.useAdvancedAdblockDetection) {
+				let advancedAdblock = new Block.Adblock();
+				if (typeof advancedAdblock === "undefined") {
+					return true;
+				}
+				else {
+					advancedAdblock.onDetected(() => {
+					});
+				}
+			}
+			else {
+				let ads: HTMLDivElement = document.createElement("div");
+				ads.setAttribute("id", "ads");
+				document.body.appendChild(ads);
+				return document.getElementById("ads") ? false : true;
+			}
 		}
 
 		private getCanvasFingerprintFeature(): string {

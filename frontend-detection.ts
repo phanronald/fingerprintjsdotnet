@@ -1,4 +1,4 @@
-﻿module FrontEndDetection {
+﻿namespace FrontEndDetection {
 	export class DectectFont {
 		private baseFonts: Array<string> = ['sans-serif', 'serif'];
 		private fontTextToTest: string = "wmliilmw";

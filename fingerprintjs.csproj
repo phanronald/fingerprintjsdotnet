@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.6</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -19,6 +19,12 @@
     <UseGlobalApplicationHostFile />
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="audio-fingerprint.js">
+      <DependentUpon>audio-fingerprint.ts</DependentUpon>
+    </Content>
+    <Content Include="audio-fingerprint.js.map">
+      <DependentUpon>audio-fingerprint.ts</DependentUpon>
+    </Content>
     <Content Include="block-adblock.js">
       <DependentUpon>block-adblock.ts</DependentUpon>
     </Content>
@@ -71,11 +77,17 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="audio-fingerprint.ts" />
     <TypeScriptCompile Include="block-adblock.ts" />
     <TypeScriptCompile Include="fingerprintjs.ts" />
     <TypeScriptCompile Include="frontend-detection.ts" />
     <TypeScriptCompile Include="browser-detection.ts" />
+    <TypeScriptCompile Include="js\definitions\cryptojs.d.ts" />
+    <TypeScriptCompile Include="js\definitions\es6-promise.d.ts" />
+    <TypeScriptCompile Include="js\definitions\mediastream.d.ts" />
+    <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
+    <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />
     <TypeScriptCompile Include="media-query.ts" />
   </ItemGroup>
   <ItemGroup>

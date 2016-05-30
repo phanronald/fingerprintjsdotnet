@@ -37,7 +37,7 @@ var MediaQuery;
         };
         ;
         return MatchMedia;
-    })();
+    }());
     MediaQuery.MatchMedia = MatchMedia;
     ;
 })(MediaQuery || (MediaQuery = {}));

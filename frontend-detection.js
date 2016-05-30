@@ -31,7 +31,7 @@ var FrontEndDetection;
             return this.detected;
         };
         return DectectFont;
-    })();
+    }());
     FrontEndDetection.DectectFont = DectectFont;
     ;
     var DetermineIEBrowser = (function () {
@@ -80,7 +80,7 @@ var FrontEndDetection;
             return rv;
         };
         return DetermineIEBrowser;
-    })();
+    }());
     FrontEndDetection.DetermineIEBrowser = DetermineIEBrowser;
     ;
     var HTML5Shims = (function () {
@@ -136,7 +136,7 @@ var FrontEndDetection;
             return result.join("");
         };
         return HTML5Shims;
-    })();
+    }());
     FrontEndDetection.HTML5Shims = HTML5Shims;
     ;
 })(FrontEndDetection || (FrontEndDetection = {}));
