@@ -86,6 +86,8 @@
     <TypeScriptCompile Include="js\definitions\es6-promise.d.ts" />
     <TypeScriptCompile Include="js\definitions\mediastream.d.ts" />
     <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
+    <TypeScriptCompile Include="js\definitions\webvideoapi.d.ts" />
+    <TypeScriptCompile Include="js\definitions\webvideoapi.utils.d.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
     <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />
     <TypeScriptCompile Include="media-query.ts" />
