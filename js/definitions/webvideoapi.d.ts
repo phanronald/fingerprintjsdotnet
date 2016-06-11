@@ -1,4 +1,55 @@
-﻿interface RenderGraph extends EventTarget {
+﻿// all the gets and sets must be the same
+
+interface VideoContext extends EventTarget {
+	canvas: HTMLCanvasElement;
+	gl: WebGLRenderingContext;
+	renderGraph: RenderGraph;
+	sourceNodes: SourceNode;
+	processingNodes: ProcessingNode;
+
+	timeline: number[];
+	currentTime: number;
+	state: VideoState;
+	playbackRate: number;
+	destinationNode: DestinationNode;
+	//callbacks: Map<string, Function>;
+	timelineCallbacks: ITimelineCallback[];
+
+	registerTimelineCallback(time: number, func: Function, ordering?: number): void;
+	unregisterTimelineCallback(func: Function): void;
+	registerCallback(type: string, func: Function): void;
+	unregisterCallback(func: Function): boolean;
+	callCallbacks(type: string): any; //
+	getCanvas(): HTMLCanvasElement;
+	getState(): VideoState;
+	setCurrentTime(currentTime: number): void;
+	getCurrentTime(): number;
+	getDuration(): number;
+	getDestination(): DestinationNode;
+	setPlaybackRate(rate: number): void;
+	getPlaybackRate(): number;
+
+	play(): boolean;
+	pause(): boolean;
+
+	createVideoSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number, loop?: boolean): VideoNode;
+	createImageSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number): ImageNode;
+	createCanvasSourceNode(canvas: HTMLCanvasElement, sourceOffset?: number, preloadTime?: number): CanvasNode;
+
+	createEffectNode(definition: INodeWebGLDefinition): EffectNode;
+	createCompositingNode(definition: INodeWebGLDefinition): CompositingNode;
+	createTransitionNode(definition: INodeWebGLDefinition): TransitionNode;
+
+	isStalled(): boolean;
+	update(dt:number): void;
+}
+
+declare var VideoContext: {
+	prototype: VideoContext;
+	new (canvas: HTMLCanvasElement, initErrorCallback?: Function): VideoContext;
+}
+
+interface RenderGraph extends EventTarget {
 	connections: IConnection[];
 	getOutputsForNode(node: GraphNode): GraphNode[];
 	getNamedInputsForNode(node: GraphNode): IConnection[];
@@ -68,6 +119,43 @@ declare var SourceNode: {
 	new (src: Element | string, gl: WebGLRenderingContext, renderGraph: RenderGraph, currentTime: number): SourceNode;
 }
 
+interface ProcessingNode extends GraphNode {
+	vertexShader: string;
+	fragmentShader: string;
+	properties: any;
+
+	inputTextureUnitMapping: IWebGLTextureUnitMapping[];
+	maxTextureUnits: any;
+	boundTextureUnits: number;
+	parameterTextureCount: number;
+	inputTextureCount: number;
+	texture: WebGLTexture;
+	program: WebGLProgram;
+	framebuffer: WebGLBuffer;
+	currentTimeLocation: WebGLUniformLocation;
+	currentTime: number;
+	rendered: boolean;
+
+	update(currentTime: number): void;
+	render(): void;
+}
+
+declare var ProcessingNode: {
+	prototype: ProcessingNode;
+	new (gl: WebGLRenderingContext, renderGraph: RenderGraph, definition: INodeWebGLDefinition, inputNames: string[], limitConnections: boolean): ProcessingNode;
+
+}
+
+interface DestinationNode extends ProcessingNode {
+	render(): void;
+}
+
+declare var DestinationNode: {
+	prototype: DestinationNode;
+	new (gl: WebGLRenderingContext, renderGraph: RenderGraph): DestinationNode;
+
+}
+
 interface VideoNode extends SourceNode {
 	preloadTime: number;
 	sourceOffset: number;
@@ -78,12 +166,6 @@ interface VideoNode extends SourceNode {
 
 	setPlaybackRate(playbackRate: number): void;
 	getPlaybackRate(): number;
-
-	load(): void;
-	destroy(): void;
-	seek(): void;
-	update(): void;
-	clearTimelineState(): void;
 }
 
 declare var VideoNode: {
@@ -93,10 +175,7 @@ declare var VideoNode: {
 }
 
 interface ImageNode extends SourceNode {
-	load(): void;
-	destroy(): void;
-	seek(): void;
-	update(): void;
+
 }
 
 declare var ImageNode: {
@@ -105,25 +184,51 @@ declare var ImageNode: {
 }
 
 interface CanvasNode extends SourceNode {
-	load(): void;
-	destroy(): void;
-	seek(): void;
-	update(): void;
+
 }
 
 declare var CanvasNode: {
 	prototype: CanvasNode;
 	new (canvas: HTMLCanvasElement | string, gl: WebGLRenderingContext, renderGraph: RenderGraph, currentTime: number, preloadTime: number): CanvasNode;
-}
-
-/*other for now*/
-interface VideoContext extends EventTarget {
 
 }
 
-declare var VideoContext: {
-	prototype: VideoContext;
-	new (canvas: HTMLCanvasElement, initErrorCallback: Function): VideoContext;
+interface EffectNode extends ProcessingNode {
+	placeholderTexture: WebGLTexture;
+	render(): void;
+}
+
+declare var EffectNode : {
+	prototype: EffectNode;
+	new (gl: WebGLRenderingContext, renderGraph: RenderGraph, definition: INodeWebGLDefinition): EffectNode;
+
+}
+
+interface CompositingNode extends ProcessingNode {
+	placeholderTexture: WebGLTexture;
+	render(): void;
+}
+
+declare var CompositingNode: {
+	prototype: CompositingNode;
+	new (gl: WebGLRenderingContext, renderGraph: RenderGraph, definition: INodeWebGLDefinition): CompositingNode;
+
+}
+
+interface TransitionNode extends ProcessingNode {
+	transitions: ITransition;
+	initialPropertyValues: any;
+	transition(startTime: number, endTime: number, currentValue: number, targetValue: number, propertyName: string): void;
+
+	doesTransitionFitOnTimeline(transition: ITransition): void;
+	insertTransitionInTimeline(transition: ITransition): void;
+	clearTransitions(propertyName: string):void;
+	update(currentTime: number): void;
+}
+
+declare var TransitionNode: {
+	prototype: TransitionNode;
+	new (gl: WebGLRenderingContext, renderGraph: RenderGraph, definition: INodeWebGLDefinition): TransitionNode;
 }
 
 interface ConnectException extends IVideoException {
@@ -143,23 +248,11 @@ declare var RenderException: {
 }
 
 declare enum VideoState {
-	'PLAYING',
-	'PAUSED',
-	'STALLED',
-	'ENDED',
-	'BROKEN',
-	'SEQUENCED',
-	'WAITING'
-}
-
-interface IConnection {
-	Source: GraphNode,
-	Destination: GraphNode,
-	Type: string,
-	Target: string | number
-}
-
-interface IVideoException {
-	message: string;
-	name: string;
+	'PLAYING' = 0,
+	'PAUSED' = 1,
+	'STALLED' = 2,
+	'ENDED' = 3,
+	'BROKEN' = 4,
+	'SEQUENCED' = 5,
+	'WAITING' = 6
 }

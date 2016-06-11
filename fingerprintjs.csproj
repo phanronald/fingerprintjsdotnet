@@ -44,10 +44,22 @@
     <Content Include="js\interfaces\IBlockAdBlockOptions.js.map">
       <DependentUpon>IBlockAdBlockOptions.ts</DependentUpon>
     </Content>
+    <Content Include="js\models\video-definitions-content.js">
+      <DependentUpon>video-definitions-content.ts</DependentUpon>
+    </Content>
+    <Content Include="js\models\video-definitions-content.js.map">
+      <DependentUpon>video-definitions-content.ts</DependentUpon>
+    </Content>
+    <Content Include="js\videocontext.js" />
     <Content Include="media-query.js">
       <DependentUpon>media-query.ts</DependentUpon>
     </Content>
-    <Content Include="test.txt" />
+    <Content Include="video-fingerprint.js">
+      <DependentUpon>video-fingerprint.ts</DependentUpon>
+    </Content>
+    <Content Include="video-fingerprint.js.map">
+      <DependentUpon>video-fingerprint.ts</DependentUpon>
+    </Content>
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -69,6 +81,7 @@
     <Content Include="block-adblock.js.map">
       <DependentUpon>block-adblock.ts</DependentUpon>
     </Content>
+    <Content Include="tsconfig.json" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -87,10 +100,11 @@
     <TypeScriptCompile Include="js\definitions\mediastream.d.ts" />
     <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
     <TypeScriptCompile Include="js\definitions\webvideoapi.d.ts" />
-    <TypeScriptCompile Include="js\definitions\webvideoapi.utils.d.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
     <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />
+    <TypeScriptCompile Include="js\models\video-definitions-content.ts" />
     <TypeScriptCompile Include="media-query.ts" />
+    <TypeScriptCompile Include="video-fingerprint.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />

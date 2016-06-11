@@ -6,10 +6,14 @@
 </head>
 <body>
 
-	<script type="text/javascript" src="mobile-browser.js"></script>
+	<canvas id="videocontext-canvas" style="display:none;"></canvas>
+	<script type="text/javascript" src="js/videocontext.js"></script>
+	<script type="text/javascript" src="js/models/video-definitions-content.js"></script>
+	<script type="text/javascript" src="video-fingerprint.js"></script>
 	<script type="text/javascript">
-		var a = new BrowserDetection.Mobile().detect();
-		alert(a);
+		//var a = new BrowserDetection.Mobile().detect();
+		new FingerPrints.Video(document.getElementById('videocontext-canvas')).init();
+		//alert(a);
 	</script>
 </body>
 </html>

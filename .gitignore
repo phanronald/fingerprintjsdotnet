@@ -110,3 +110,5 @@ UpgradeLog*.XML
 .sass-cache
 .sass-cache/*
 .vs/config/applicationhost.config
+
+js/frontend-functionality.js
