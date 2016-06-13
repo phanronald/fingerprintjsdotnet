@@ -1,5 +1,4 @@
-﻿/// <reference path="js/definitions/webaudioapi.d.ts" />
-/// <reference path="js/definitions/cryptojs.d.ts" />
+﻿/// <reference path="js/definitions/cryptojs.d.ts" />
 /// <reference path="js/interfaces/interfaces.d.ts" />
 
 namespace FingerPrints {

@@ -20,19 +20,23 @@ interface VideoContext extends EventTarget {
 	registerCallback(type: string, func: Function): void;
 	unregisterCallback(func: Function): boolean;
 	callCallbacks(type: string): any; //
-	getCanvas(): HTMLCanvasElement;
-	getState(): VideoState;
-	setCurrentTime(currentTime: number): void;
-	getCurrentTime(): number;
-	getDuration(): number;
-	getDestination(): DestinationNode;
-	setPlaybackRate(rate: number): void;
-	getPlaybackRate(): number;
+
+	duration: number;
+	destination: DestinationNode;
+
+	//getCanvas(): HTMLCanvasElement;
+	//getState(): VideoState;
+	//setCurrentTime(currentTime: number): void;
+	//getCurrentTime(): number;
+	//getDuration(): number;
+	//getDestination(): DestinationNode;
+	//setPlaybackRate(rate: number): void;
+	//getPlaybackRate(): number;
 
 	play(): boolean;
 	pause(): boolean;
 
-	createVideoSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number, loop?: boolean): VideoNode;
+	createVideoSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number, loop?: boolean, muted?:boolean): VideoNode;
 	createImageSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number): ImageNode;
 	createCanvasSourceNode(canvas: HTMLCanvasElement, sourceOffset?: number, preloadTime?: number): CanvasNode;
 
@@ -73,7 +77,7 @@ interface GraphNode extends EventTarget {
 	maximumConnections(): number;
 	inputs(): GraphNode[];
 	outputs(): GraphNode[];
-	connect(targetNode: GraphNode, targetPort: string | number): boolean;
+	connect(targetNode: GraphNode, targetPort?: string | number): boolean;
 	disconnect(targetNode: GraphNode): boolean;
 }
 
@@ -163,6 +167,7 @@ interface VideoNode extends SourceNode {
 	playbackRate: number;
 	playbackRateUpdated: boolean;
 	loopElement: boolean;
+	mutedElement: boolean;
 
 	setPlaybackRate(playbackRate: number): void;
 	getPlaybackRate(): number;
@@ -171,7 +176,7 @@ interface VideoNode extends SourceNode {
 declare var VideoNode: {
 	prototype: VideoNode;
 	new (src: Element | string, gl: WebGLRenderingContext, renderGraph: RenderGraph, currentTime: number,
-		globalPlaybackRate: number, sourceOffset: number, preloadTime: number, loop: boolean): VideoNode;
+		globalPlaybackRate: number, sourceOffset: number, preloadTime: number, loop: boolean, muted:boolean): VideoNode;
 }
 
 interface ImageNode extends SourceNode {

@@ -96,9 +96,6 @@
     <TypeScriptCompile Include="frontend-detection.ts" />
     <TypeScriptCompile Include="browser-detection.ts" />
     <TypeScriptCompile Include="js\definitions\cryptojs.d.ts" />
-    <TypeScriptCompile Include="js\definitions\es6-promise.d.ts" />
-    <TypeScriptCompile Include="js\definitions\mediastream.d.ts" />
-    <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
     <TypeScriptCompile Include="js\definitions\webvideoapi.d.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
     <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />

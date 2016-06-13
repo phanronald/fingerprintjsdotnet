@@ -111,4 +111,4 @@ UpgradeLog*.XML
 .sass-cache/*
 .vs/config/applicationhost.config
 
-js/frontend-functionality.js
+*.mp4

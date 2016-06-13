@@ -9,7 +9,22 @@ var FingerPrints;
             this.canvas = canvas;
             this.callbackFunc = callbackFunc;
             this.init = function () {
-                _this.testVideoNode();
+                var that = _this;
+                window.onload = function () {
+                    var videoNode1 = that.videoCtx.createVideoSourceNode("video1.mp4", 0, 4, false, true);
+                    videoNode1.start(0);
+                    videoNode1.stop(4);
+                    var videoNode2 = that.videoCtx.createVideoSourceNode("video2.mp4", 0, 4, false, true);
+                    videoNode2.start(2);
+                    videoNode2.stop(6);
+                    var crossFade = that.videoCtx.createTransitionNode(that.videoModels.crossfade);
+                    crossFade.transition(2, 4, 0.0, 1.0, "mix");
+                    videoNode2.connect(crossFade);
+                    videoNode1.connect(crossFade);
+                    crossFade.connect(that.videoCtx.destination);
+                    _this.videoCtx.play();
+                };
+                //this.testVideoNode();
             };
             this.testEffectNode = function () {
                 var effectNode = _this.videoCtx.createEffectNode(_this.videoModels.monochrome);
@@ -25,10 +40,9 @@ var FingerPrints;
                 videoNode2.start(0);
                 videoNode2.stop(10);
                 console.log(_this.videoCtx.duration == 20.245);
-                _this.videoCtx.duration = 12;
-                console.log(_this.videoCtx.duration);
             };
             this.videoCtx = new VideoContext(this.canvas, this.callbackFunc);
+            this.canvas.style.display = '';
             this.videoModels = new FingerPrints.VideoDefinitionContent();
         }
         return Video;
