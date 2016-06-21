@@ -416,10 +416,13 @@
 			value: function createVideoSourceNode(src) {
 				var sourceOffset = arguments.length <= 1 || arguments[1] === undefined ? 0 : arguments[1];
 				var preloadTime = arguments.length <= 2 || arguments[2] === undefined ? 4 : arguments[2];
-				var loop = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
-				var muted = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
 
-				var videoNode = new _SourceNodesVideonodeJs2["default"](src, this._gl, this._renderGraph, this._currentTime, this._playbackRate, sourceOffset, preloadTime, loop, muted);
+				var attributes = arguments.length <= 3 || arguments[3] === undefined ? {} : arguments[3];
+				//var loop = arguments.length <= 3 || arguments[3] === undefined ? false : arguments[3];
+				//var muted = arguments.length <= 4 || arguments[4] === undefined ? false : arguments[4];
+
+				//var videoNode = new _SourceNodesVideonodeJs2["default"](src, this._gl, this._renderGraph, this._currentTime, this._playbackRate, sourceOffset, preloadTime, loop, muted);
+				var videoNode = new _SourceNodesVideonodeJs2["default"](src, this._gl, this._renderGraph, this._currentTime, this._playbackRate, sourceOffset, preloadTime, attributes);
 				this._sourceNodes.push(videoNode);
 				return videoNode;
 			}
@@ -1634,8 +1637,10 @@
 			var globalPlaybackRate = arguments.length <= 4 || arguments[4] === undefined ? 1.0 : arguments[4];
 			var sourceOffset = arguments.length <= 5 || arguments[5] === undefined ? 0 : arguments[5];
 			var preloadTime = arguments.length <= 6 || arguments[6] === undefined ? 4 : arguments[6];
-			var loop = arguments.length <= 7 || arguments[7] === undefined ? false : arguments[7];
-			var muted = arguments.length <= 8 || arguments[8] === undefined ? false : arguments[8];
+
+			var attributes = arguments.length <= 7 || arguments[7] === undefined ? {} : arguments[7];
+			//var loop = arguments.length <= 7 || arguments[7] === undefined ? false : arguments[7];
+			//var muted = arguments.length <= 8 || arguments[8] === undefined ? false : arguments[8];
 
 			_classCallCheck(this, VideoNode);
 
@@ -1645,8 +1650,9 @@
 			this._globalPlaybackRate = globalPlaybackRate;
 			this._playbackRate = 1.0;
 			this._playbackRateUpdated = true;
-			this._loopElement = loop;
-			this._mutedElement = muted;
+			this._attributes = attributes;
+			//this._loopElement = loop;
+			//this._mutedElement = muted;
 		}
 
 		_createClass(VideoNode, [{
@@ -1654,8 +1660,14 @@
 			value: function _load() {
 				//super._load();
 				if (this._element !== undefined) {
-					this._element.loop = this._loopElement;
-					this._element.muted = this._mutedElement;
+
+					for (var key in this._attributes) {
+						this._element[key] = this._attributes[key];
+					}
+
+					//this._element.loop = this._loopElement;
+					//this._element.muted = this._mutedElement;
+
 					if (this._element.readyState > 3 && !this._element.seeking) {
 						if (this._loopElement === false) {
 							if (this._stopTime === Infinity || this._stopTime == undefined) {
@@ -1675,8 +1687,13 @@
 					this._element = document.createElement("video");
 					this._element.setAttribute('crossorigin', 'anonymous');
 					this._element.src = this._elementURL;
-					this._element.loop = this._loopElement;
-					this._element.muted = this._mutedElement;
+
+					for (var key in this._attributes) {
+						this._element[key] = this._attributes[key];
+					}
+					//this._element.loop = this._loopElement;
+					//this._element.muted = this._mutedElement;
+
 					this._playbackRateUpdated = true;
 					this._triggerCallbacks("load");
 				}

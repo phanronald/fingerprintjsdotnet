@@ -18,17 +18,17 @@ namespace FingerPrints {
 
 			var that = this;
 			window.onload = () => {
-
-				let videoNode1 = that.videoCtx.createVideoSourceNode("video1.mp4", 0, 4, false, true);
+				let namedNodeVideo: {} = { "loop": false, "muted": false };
+				let videoNode1 = that.videoCtx.createVideoSourceNode("video1.mp4", 0, 9, namedNodeVideo);
 				videoNode1.start(0);
-				videoNode1.stop(4);
+				videoNode1.stop(9);
 
-				let videoNode2 = that.videoCtx.createVideoSourceNode("video2.mp4", 0, 4, false, true);
+				let videoNode2 = that.videoCtx.createVideoSourceNode("video2.mp4", 0, 4, namedNodeVideo);
 				videoNode2.start(2);
-				videoNode2.stop(6);
+				videoNode2.stop(11);
 
 				let crossFade = that.videoCtx.createTransitionNode(that.videoModels.crossfade);
-				crossFade.transition(2, 4, 0.0, 1.0, "mix");
+				crossFade.transition(2, 9, 0.0, 1.0, "mix");
 
 				videoNode2.connect(crossFade);
 				videoNode1.connect(crossFade);

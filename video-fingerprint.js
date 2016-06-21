@@ -11,14 +11,15 @@ var FingerPrints;
             this.init = function () {
                 var that = _this;
                 window.onload = function () {
-                    var videoNode1 = that.videoCtx.createVideoSourceNode("video1.mp4", 0, 4, false, true);
+                    var namedNodeVideo = { "loop": false, "muted": false };
+                    var videoNode1 = that.videoCtx.createVideoSourceNode("video1.mp4", 0, 9, namedNodeVideo);
                     videoNode1.start(0);
-                    videoNode1.stop(4);
-                    var videoNode2 = that.videoCtx.createVideoSourceNode("video2.mp4", 0, 4, false, true);
+                    videoNode1.stop(9);
+                    var videoNode2 = that.videoCtx.createVideoSourceNode("video2.mp4", 0, 4, namedNodeVideo);
                     videoNode2.start(2);
-                    videoNode2.stop(6);
+                    videoNode2.stop(11);
                     var crossFade = that.videoCtx.createTransitionNode(that.videoModels.crossfade);
-                    crossFade.transition(2, 4, 0.0, 1.0, "mix");
+                    crossFade.transition(2, 9, 0.0, 1.0, "mix");
                     videoNode2.connect(crossFade);
                     videoNode1.connect(crossFade);
                     crossFade.connect(that.videoCtx.destination);

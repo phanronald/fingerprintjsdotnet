@@ -36,7 +36,8 @@ interface VideoContext extends EventTarget {
 	play(): boolean;
 	pause(): boolean;
 
-	createVideoSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number, loop?: boolean, muted?:boolean): VideoNode;
+	//createVideoSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number, loop?: boolean, muted?: boolean): VideoNode;
+	createVideoSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number, attributes?: {}): VideoNode;
 	createImageSourceNode(src: Element | string, sourceOffset?: number, preloadTime?: number): ImageNode;
 	createCanvasSourceNode(canvas: HTMLCanvasElement, sourceOffset?: number, preloadTime?: number): CanvasNode;
 
@@ -166,8 +167,6 @@ interface VideoNode extends SourceNode {
 	globalPlaybackRate: number;
 	playbackRate: number;
 	playbackRateUpdated: boolean;
-	loopElement: boolean;
-	mutedElement: boolean;
 
 	setPlaybackRate(playbackRate: number): void;
 	getPlaybackRate(): number;
@@ -176,7 +175,7 @@ interface VideoNode extends SourceNode {
 declare var VideoNode: {
 	prototype: VideoNode;
 	new (src: Element | string, gl: WebGLRenderingContext, renderGraph: RenderGraph, currentTime: number,
-		globalPlaybackRate: number, sourceOffset: number, preloadTime: number, loop: boolean, muted:boolean): VideoNode;
+		globalPlaybackRate: number, sourceOffset: number, preloadTime: number, attributes: {}): VideoNode;
 }
 
 interface ImageNode extends SourceNode {
