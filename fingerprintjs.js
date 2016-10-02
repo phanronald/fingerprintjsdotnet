@@ -703,7 +703,8 @@ var FingerPrints;
             keys.push(navigator.mimeTypes);
             keys.push(this.getAdBlock());
             keys.push(this.getTouchSupport());
-            keys.push(new BrowserDetection.Mobile().detectByRegex());
+            keys.push(new BrowserDetection.Mobile().IsMobileDevice());
+            keys.push(new BrowserDetection.Tablet().IsTabletDevice());
             keys.push(this.specialDetermineIEFunction());
             if (this.use64bitHash) {
                 return this.murmurhash3_64_gc(keys.join("###"), 31);

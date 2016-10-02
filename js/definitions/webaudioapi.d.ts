@@ -1,5 +1,4 @@
 ﻿/// <reference path="es6-promise.d.ts" />
-/// <reference path="mediastream.d.ts" />
 
 // Type definitions for Web Audio API
 // Project: http://www.w3.org/TR/webaudio/

@@ -749,7 +749,7 @@ namespace FingerPrints {
 				keys.push(this.getWebGlFeatures());
 			}
 
-			if (this.hasIndexedDB() || !!window.msIndexedDB) {
+			if (this.hasIndexedDB() || !!(<any>window).msIndexedDB) {
 				keys.push("hasIndexDB");
 			}
 
@@ -765,14 +765,15 @@ namespace FingerPrints {
 				keys.push("hasOpenDatabase");
 			}
 
-			keys.push(navigator.cpuClass || "not supported");
+			keys.push((<any>navigator).cpuClass || "not supported");
 			keys.push((<any>navigator).doNotTrack || "nope");
 			keys.push(navigator.platform);
 			keys.push(this.getPluginsString());
 			keys.push(navigator.mimeTypes);
 			keys.push(this.getAdBlock());
 			keys.push(this.getTouchSupport());
-			keys.push(new BrowserDetection.Mobile().detectByRegex());
+			keys.push(new BrowserDetection.Mobile().IsMobileDevice());
+			keys.push(new BrowserDetection.Tablet().IsTabletDevice());
 			keys.push(this.specialDetermineIEFunction());
 
 			if (this.use64bitHash) {

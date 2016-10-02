@@ -10,7 +10,7 @@
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <DebugType>full</DebugType>
     <DebugSymbols>true</DebugSymbols>
-    <TypeScriptToolsVersion>1.8</TypeScriptToolsVersion>
+    <TypeScriptToolsVersion>2.0</TypeScriptToolsVersion>
     <UseIISExpress>true</UseIISExpress>
     <IISExpressSSLPort />
     <IISExpressAnonymousAuthentication />
@@ -84,7 +84,6 @@
     <TypeScriptCompile Include="browser-detection.ts" />
     <TypeScriptCompile Include="js\definitions\cryptojs.d.ts" />
     <TypeScriptCompile Include="js\definitions\es6-promise.d.ts" />
-    <TypeScriptCompile Include="js\definitions\mediastream.d.ts" />
     <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
     <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />
