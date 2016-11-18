@@ -38,6 +38,8 @@
     <Content Include="browser-detection.js">
       <DependentUpon>browser-detection.ts</DependentUpon>
     </Content>
+    <Content Include="js\Collection.js" />
+    <Content Include="js\dictionary.js" />
     <Content Include="js\interfaces\IBlockAdBlockOptions.js">
       <DependentUpon>IBlockAdBlockOptions.ts</DependentUpon>
     </Content>
@@ -69,6 +71,8 @@
     <Content Include="block-adblock.js.map">
       <DependentUpon>block-adblock.ts</DependentUpon>
     </Content>
+    <Content Include="js\Collection.js.map" />
+    <Content Include="js\dictionary.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
@@ -82,9 +86,11 @@
     <TypeScriptCompile Include="fingerprintjs.ts" />
     <TypeScriptCompile Include="frontend-detection.ts" />
     <TypeScriptCompile Include="browser-detection.ts" />
+    <TypeScriptCompile Include="js\Collection.ts" />
     <TypeScriptCompile Include="js\definitions\cryptojs.d.ts" />
     <TypeScriptCompile Include="js\definitions\es6-promise.d.ts" />
     <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
+    <TypeScriptCompile Include="js\Dictionary.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
     <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />
     <TypeScriptCompile Include="media-query.ts" />
