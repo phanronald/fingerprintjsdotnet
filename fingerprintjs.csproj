@@ -22,9 +22,6 @@
     <Content Include="audio-fingerprint.js">
       <DependentUpon>audio-fingerprint.ts</DependentUpon>
     </Content>
-    <Content Include="audio-fingerprint.js.map">
-      <DependentUpon>audio-fingerprint.ts</DependentUpon>
-    </Content>
     <Content Include="block-adblock.js">
       <DependentUpon>block-adblock.ts</DependentUpon>
     </Content>
@@ -38,47 +35,30 @@
     <Content Include="browser-detection.js">
       <DependentUpon>browser-detection.ts</DependentUpon>
     </Content>
-    <Content Include="js\Collection.js" />
-    <Content Include="js\dictionary.js" />
+    <Content Include="js\Dictionary.js">
+      <DependentUpon>Dictionary.ts</DependentUpon>
+    </Content>
+    <Content Include="js\Enumerable.js">
+      <DependentUpon>Enumerable.ts</DependentUpon>
+    </Content>
     <Content Include="js\interfaces\IBlockAdBlockOptions.js">
       <DependentUpon>IBlockAdBlockOptions.ts</DependentUpon>
     </Content>
-    <Content Include="js\interfaces\IBlockAdBlockOptions.js.map">
-      <DependentUpon>IBlockAdBlockOptions.ts</DependentUpon>
+    <Content Include="js\interfaces\IEnumberable.js">
+      <DependentUpon>IEnumberable.ts</DependentUpon>
     </Content>
     <Content Include="media-query.js">
       <DependentUpon>media-query.ts</DependentUpon>
     </Content>
     <Content Include="test.txt" />
-    <Content Include="web.config" />
+    <Content Include="webgl-detection.js">
+      <DependentUpon>webgl-detection.ts</DependentUpon>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="README.md" />
     <Content Include=".gitignore" />
-    <Content Include="fingerprintjs.js.map">
-      <DependentUpon>fingerprintjs.ts</DependentUpon>
-    </Content>
-    <Content Include="frontend-detection.js.map">
-      <DependentUpon>frontend-detection.ts</DependentUpon>
-    </Content>
     <Content Include="obj\Debug\DesignTimeResolveAssemblyReferencesInput.cache" />
-    <Content Include="browser-detection.map">
-      <DependentUpon>browser-detection.ts</DependentUpon>
-    </Content>
-    <Content Include="media-query.js.map">
-      <DependentUpon>media-query.ts</DependentUpon>
-    </Content>
-    <Content Include="block-adblock.js.map">
-      <DependentUpon>block-adblock.ts</DependentUpon>
-    </Content>
-    <Content Include="js\Collection.js.map" />
-    <Content Include="js\dictionary.js.map" />
-    <None Include="web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="audio-fingerprint.ts" />
@@ -86,14 +66,15 @@
     <TypeScriptCompile Include="fingerprintjs.ts" />
     <TypeScriptCompile Include="frontend-detection.ts" />
     <TypeScriptCompile Include="browser-detection.ts" />
-    <TypeScriptCompile Include="js\Collection.ts" />
     <TypeScriptCompile Include="js\definitions\cryptojs.d.ts" />
     <TypeScriptCompile Include="js\definitions\es6-promise.d.ts" />
-    <TypeScriptCompile Include="js\definitions\webaudioapi.d.ts" />
     <TypeScriptCompile Include="js\Dictionary.ts" />
+    <TypeScriptCompile Include="js\Enumerable.ts" />
     <TypeScriptCompile Include="js\interfaces\IBlockAdBlockOptions.ts" />
+    <TypeScriptCompile Include="js\interfaces\IEnumberable.ts" />
     <TypeScriptCompile Include="js\interfaces\interfaces.d.ts" />
     <TypeScriptCompile Include="media-query.ts" />
+    <TypeScriptCompile Include="webgl-detection.ts" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
@@ -133,7 +114,18 @@
   </ProjectExtensions>
   <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
     <TypeScriptRemoveComments>false</TypeScriptRemoveComments>
-    <TypeScriptSourceMap>true</TypeScriptSourceMap>
+    <TypeScriptSourceMap>False</TypeScriptSourceMap>
+    <TypeScriptTarget>ES5</TypeScriptTarget>
+    <TypeScriptJSXEmit>None</TypeScriptJSXEmit>
+    <TypeScriptCompileOnSaveEnabled>True</TypeScriptCompileOnSaveEnabled>
+    <TypeScriptNoImplicitAny>False</TypeScriptNoImplicitAny>
+    <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+    <TypeScriptOutFile />
+    <TypeScriptOutDir />
+    <TypeScriptGeneratesDeclarations>False</TypeScriptGeneratesDeclarations>
+    <TypeScriptNoEmitOnError>True</TypeScriptNoEmitOnError>
+    <TypeScriptMapRoot />
+    <TypeScriptSourceRoot />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)' == 'Release'">
     <TypeScriptRemoveComments>true</TypeScriptRemoveComments>

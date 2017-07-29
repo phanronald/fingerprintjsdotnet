@@ -1,4 +1,3 @@
-/// <reference path="js/definitions/webaudioapi.d.ts" />
 /// <reference path="js/definitions/cryptojs.d.ts" />
 /// <reference path="js/interfaces/interfaces.d.ts" />
 var FingerPrints;
@@ -14,7 +13,7 @@ var FingerPrints;
             };
             this.initFingerprintProperties = function () {
                 try {
-                    var currentAudioCtx = AudioContext || webkitAudioContext;
+                    var currentAudioCtx = AudioContext;
                     if (typeof currentAudioCtx !== "function") {
                         _this.fingerprint_properties = "Not Available";
                     }
@@ -35,7 +34,7 @@ var FingerPrints;
             };
             this.initFingerprintDynamicCompression = function () {
                 try {
-                    var pxi_context = new (OfflineAudioContext || webkitOfflineAudioContext)(1, 44100, 44100);
+                    var pxi_context = new OfflineAudioContext(1, 44100, 44100);
                     if (!pxi_context) {
                         //display results
                         _this.fingerprint_dyanmic_compression_sum_buffer = 0;
@@ -47,7 +46,7 @@ var FingerPrints;
                     pxi_compressor_1.threshold && (pxi_compressor_1.threshold.value = -50);
                     pxi_compressor_1.knee && (pxi_compressor_1.knee.value = 40);
                     pxi_compressor_1.ratio && (pxi_compressor_1.ratio.value = 12);
-                    pxi_compressor_1.reduction && (pxi_compressor_1.reduction.value = -20);
+                    //pxi_compressor.reduction && (pxi_compressor.reduction = -20);
                     pxi_compressor_1.attack && (pxi_compressor_1.attack.value = 0);
                     pxi_compressor_1.release && (pxi_compressor_1.release.value = 0.25);
                     pxi_oscillator.connect(pxi_compressor_1);
@@ -102,7 +101,7 @@ var FingerPrints;
                 compressor.threshold && (compressor.threshold.value = -50);
                 compressor.knee && (compressor.knee.value = 40);
                 compressor.ratio && (compressor.ratio.value = 12);
-                compressor.reduction && (compressor.reduction.value = -20);
+                //compressor.reduction && (compressor.reduction.value = -20);
                 compressor.attack && (compressor.attack.value = 0);
                 compressor.release && (compressor.release.value = 0.25);
                 necessaryAudioProps.Gain.gain.value = 0;
@@ -133,7 +132,7 @@ var FingerPrints;
                 return a;
             };
             this.createNecessaryAudioFingerprinting = function () {
-                var AudioCtx = new (AudioContext || webkitAudioContext)();
+                var AudioCtx = new AudioContext();
                 var Oscillator = AudioCtx.createOscillator();
                 var Analyzer = AudioCtx.createAnalyser();
                 var Gain = AudioCtx.createGain();

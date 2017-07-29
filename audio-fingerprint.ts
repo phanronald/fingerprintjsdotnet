@@ -1,5 +1,4 @@
-﻿/// <reference path="js/definitions/webaudioapi.d.ts" />
-/// <reference path="js/definitions/cryptojs.d.ts" />
+﻿/// <reference path="js/definitions/cryptojs.d.ts" />
 /// <reference path="js/interfaces/interfaces.d.ts" />
 
 namespace FingerPrints {
@@ -29,7 +28,7 @@ namespace FingerPrints {
 
 		private initFingerprintProperties = (): void => {
 			try {
-				let currentAudioCtx = AudioContext || webkitAudioContext;
+				let currentAudioCtx = AudioContext;
 				if (typeof currentAudioCtx !== "function") {
 					this.fingerprint_properties = "Not Available";
 				}
@@ -55,7 +54,7 @@ namespace FingerPrints {
 		private initFingerprintDynamicCompression = (): void => {
 			try {
 
-				let pxi_context = new (OfflineAudioContext || webkitOfflineAudioContext)(1, 44100, 44100);
+				let pxi_context = new OfflineAudioContext(1, 44100, 44100);
 				if (!pxi_context) {
 					//display results
 					this.fingerprint_dyanmic_compression_sum_buffer = 0;
@@ -69,7 +68,7 @@ namespace FingerPrints {
 				pxi_compressor.threshold && (pxi_compressor.threshold.value = -50);
 				pxi_compressor.knee && (pxi_compressor.knee.value = 40);
 				pxi_compressor.ratio && (pxi_compressor.ratio.value = 12);
-				pxi_compressor.reduction && (pxi_compressor.reduction.value = -20);
+				//pxi_compressor.reduction && (pxi_compressor.reduction = -20);
 				pxi_compressor.attack && (pxi_compressor.attack.value = 0);
 				pxi_compressor.release && (pxi_compressor.release.value = 0.25);
 
@@ -132,7 +131,7 @@ namespace FingerPrints {
 			compressor.threshold && (compressor.threshold.value = -50);
 			compressor.knee && (compressor.knee.value = 40);
 			compressor.ratio && (compressor.ratio.value = 12);
-			compressor.reduction && (compressor.reduction.value = -20);
+			//compressor.reduction && (compressor.reduction.value = -20);
 			compressor.attack && (compressor.attack.value = 0);
 			compressor.release && (compressor.release.value = 0.25);
 
@@ -170,7 +169,7 @@ namespace FingerPrints {
 		}
 
 		private createNecessaryAudioFingerprinting = (): INecessaryAudioContextProperties => {
-			let AudioCtx: AudioContext = new (AudioContext || webkitAudioContext)();
+			let AudioCtx: AudioContext = new AudioContext();
 			let Oscillator: OscillatorNode = AudioCtx.createOscillator();
 			let Analyzer: AnalyserNode = AudioCtx.createAnalyser();
 			let Gain: GainNode = AudioCtx.createGain();

@@ -12,10 +12,12 @@ TestResults
 *.suo
 *.user
 *.sln.docstates
+*.txt
 
 # Build results
 [Dd]ebug/
 [Rr]elease/
+[Bb]in/
 x64/
 *_i.c
 *_p.c
